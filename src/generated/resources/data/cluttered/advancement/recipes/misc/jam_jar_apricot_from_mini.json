@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:jam_jar_apricot_from_mini"
+        "recipes": "cluttered:jam_jar_apricot_from_mini"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

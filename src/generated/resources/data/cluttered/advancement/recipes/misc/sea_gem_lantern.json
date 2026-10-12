@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:sea_gem_lantern"
+        "recipes": "cluttered:sea_gem_lantern"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

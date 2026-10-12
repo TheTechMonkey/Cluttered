@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:cinnamon_bun"
+        "recipes": "cluttered:cinnamon_bun"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

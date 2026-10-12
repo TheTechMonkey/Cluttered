@@ -4,21 +4,21 @@
 
 The GitHub repository for the Cluttered mod.
 
-Cluttered is a furniture and decoration mod originally created by blake and YellowChuJelly. This repository is currently carrying an unofficial Fabric port of Cluttered 3.0.3 for Minecraft 26.1.x.
+Cluttered is a furniture and decoration mod originally created by blake and YellowChuJelly. This repository is currently carrying an unofficial Fabric port of Cluttered 3.0.3 for Minecraft 26.3.
 
 ## Unofficial Fabric Port
 
 This branch targets:
 
-- Minecraft 26.1.x
-- Fabric Loader 0.19.2 or newer
-- Fabric API 0.144.3 or newer
+- Minecraft 26.3
+- Fabric Loader 0.19.5 or newer
+- Fabric API 0.160.5 or newer
 - Java 25
 
 The generated jar uses an `unofficial` suffix so it is easy to distinguish from official releases:
 
 ```text
-build/libs/cluttered-3.0.3-26.1.x-0.2.3-fabric-unofficial.jar
+build/libs/cluttered-3.0.3-26.3-0.3.0-fabric-unofficial.jar
 ```
 
 This is not an official upstream release, and it is not a Forge jar.
@@ -79,13 +79,13 @@ build/libs/
 
 ## Testing Notes
 
-This branch has been built successfully against Minecraft 26.1 with Fabric Loader 0.19.2 and Fabric API 0.144.3+26.1. The compatibility metadata allows Minecraft 26.1.x, including 26.1, 26.1.1, and 26.1.2, and the current mixin targets were checked against the 26.1 patch line.
+This branch has been built and launch-tested against Minecraft 26.3 with Fabric Loader 0.19.5 and Fabric API 0.160.5+26.3. Both a dedicated server and the client reach a fully loaded state. The generated recipes, advancements, loot tables, and custom tree features have been migrated to the 26.3 data formats.
 
 Shader packs are not specially integrated. Blocks that emit light use vanilla Minecraft light emission, which most shader packs can read normally, but emissive visuals still depend on the shader/resource-pack setup.
 
 ## Distribution Notes
 
-If you share this build, label it clearly as an unofficial Fabric port for Minecraft 26.1.x and include or link to the matching source code for this branch.
+If you share this build, label it clearly as an unofficial Fabric port for Minecraft 26.3 and include or link to the matching source code for this branch.
 
 The project declares GNU GPL 3.0 licensing. See [LICENSE](LICENSE).
 

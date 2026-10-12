@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:mini_cactus_set"
+        "recipes": "cluttered:mini_cactus_set"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

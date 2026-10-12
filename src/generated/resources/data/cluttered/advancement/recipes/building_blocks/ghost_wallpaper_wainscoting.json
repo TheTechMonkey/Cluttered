@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:ghost_wallpaper_wainscoting"
+        "recipes": "cluttered:ghost_wallpaper_wainscoting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

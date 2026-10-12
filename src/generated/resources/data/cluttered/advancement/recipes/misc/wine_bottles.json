@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:wine_bottles"
+        "recipes": "cluttered:wine_bottles"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:lunar_observatory_globe"
+        "recipes": "cluttered:lunar_observatory_globe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

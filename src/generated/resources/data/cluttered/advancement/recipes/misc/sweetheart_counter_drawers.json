@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:sweetheart_counter_drawers"
+        "recipes": "cluttered:sweetheart_counter_drawers"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

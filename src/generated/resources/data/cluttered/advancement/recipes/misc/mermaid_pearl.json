@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:mermaid_pearl"
+        "recipes": "cluttered:mermaid_pearl"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:sewing_table_with_tablecloth"
+        "recipes": "cluttered:sewing_table_with_tablecloth"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

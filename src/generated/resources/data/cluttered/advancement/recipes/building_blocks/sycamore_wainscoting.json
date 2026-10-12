@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:sycamore_wainscoting"
+        "recipes": "cluttered:sycamore_wainscoting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

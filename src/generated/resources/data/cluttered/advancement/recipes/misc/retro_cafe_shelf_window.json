@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:retro_cafe_shelf_window"
+        "recipes": "cluttered:retro_cafe_shelf_window"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

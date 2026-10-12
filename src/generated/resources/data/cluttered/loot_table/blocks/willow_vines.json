@@ -2,24 +2,22 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:match_tool",
-          "predicate": {
-            "items": [
-              "minecraft:shears"
-            ]
-          }
+      "bonus_rolls": 0,
+      "condition": {
+        "type": "minecraft:match_tool",
+        "predicate": {
+          "items": [
+            "minecraft:shears"
+          ]
         }
-      ],
+      },
       "entries": [
         {
           "type": "minecraft:item",
           "name": "cluttered:willow_vines"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "cluttered:blocks/willow_vines"

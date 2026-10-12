@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:diamond_wallpaper_pear"
+        "recipes": "cluttered:diamond_wallpaper_pear"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

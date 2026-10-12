@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:pok_ta_pok_hoop_snakes"
+        "recipes": "cluttered:pok_ta_pok_hoop_snakes"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

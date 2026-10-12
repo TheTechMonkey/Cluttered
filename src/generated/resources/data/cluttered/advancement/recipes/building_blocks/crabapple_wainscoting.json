@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:crabapple_wainscoting"
+        "recipes": "cluttered:crabapple_wainscoting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

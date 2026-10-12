@@ -2,28 +2,24 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
+      "bonus_rolls": 0,
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "block": "cluttered:willow_garden_door",
-              "condition": "minecraft:block_state_property",
-              "properties": {
-                "half": "lower"
-              }
+          "condition": {
+            "blocks": "cluttered:willow_garden_door",
+            "type": "minecraft:match_block",
+            "state": {
+              "half": "lower"
             }
-          ],
+          },
           "name": "cluttered:willow_garden_door"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "cluttered:blocks/willow_garden_door"

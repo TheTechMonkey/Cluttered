@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:colosseo_wall_lantern"
+        "recipes": "cluttered:colosseo_wall_lantern"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

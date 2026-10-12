@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:antique_book_stand"
+        "recipes": "cluttered:antique_book_stand"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:lunar_observatory_pedestal_table"
+        "recipes": "cluttered:lunar_observatory_pedestal_table"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

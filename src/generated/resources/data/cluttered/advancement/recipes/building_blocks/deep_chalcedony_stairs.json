@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:deep_chalcedony_stairs"
+        "recipes": "cluttered:deep_chalcedony_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

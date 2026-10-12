@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:endtable_sunshine"
+        "recipes": "cluttered:endtable_sunshine"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

@@ -7,9 +7,14 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.attribute.BedRule;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AbstractBedBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
@@ -88,14 +93,16 @@ public class MushroomBedBlock extends MultiblockBedBlock{
                 }
             }
 
-            if (!canSetSpawn(pLevel)) {
+            BedRule bedRule = pLevel.environmentAttributes().getValue(EnvironmentAttributes.BED_RULE, pPos);
+            if (bedRule.destroyOnUse()) {
+                bedRule.errorMessage().ifPresent(pPlayer::sendOverlayMessage);
                 pLevel.removeBlock(pPos, false);
                 BlockPos removePos = pPos.relative((pState.getValue(FACING)).getOpposite());
                 if (pLevel.getBlockState(removePos).is(this)) {
                     pLevel.removeBlock(removePos, false);
                 }
 
-                Vec3 center = pPos.getCenter();
+                Vec3 center = Vec3.atCenterOf(pPos);
                 pLevel.explode(null, pLevel.damageSources().badRespawnPointExplosion(center), null, center, 5.0F, true, Level.ExplosionInteraction.BLOCK);
             } else if (pState.getValue(OCCUPIED)) {
                 pPlayer.sendOverlayMessage(Component.translatable("block.minecraft.bed.occupied"));
@@ -104,7 +111,8 @@ public class MushroomBedBlock extends MultiblockBedBlock{
             } else {
                 BlockPos sleepPos = pPos;
                 BlockState sleepState = pState;
-                var sleepResult = pPlayer.startSleepInBed(sleepPos);
+                AbstractBedBlock vanillaBed = (AbstractBedBlock) Blocks.BED.pick(DyeColor.WHITE);
+                var sleepResult = pPlayer.startSleepInBed(vanillaBed, sleepState, bedRule, sleepPos);
                 sleepResult.ifLeft((sleepingProblem) -> {
                     if (sleepingProblem.message() != null) {
                         pPlayer.sendOverlayMessage(sleepingProblem.message());

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:rosette_tiles"
+        "recipes": "cluttered:rosette_tiles"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

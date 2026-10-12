@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:deep_chalcedony_bricks"
+        "recipes": "cluttered:deep_chalcedony_bricks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

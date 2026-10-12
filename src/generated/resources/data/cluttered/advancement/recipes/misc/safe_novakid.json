@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:safe_novakid"
+        "recipes": "cluttered:safe_novakid"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

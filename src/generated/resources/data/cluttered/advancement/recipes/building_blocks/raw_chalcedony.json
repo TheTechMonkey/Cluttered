@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:raw_chalcedony"
+        "recipes": "cluttered:raw_chalcedony"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

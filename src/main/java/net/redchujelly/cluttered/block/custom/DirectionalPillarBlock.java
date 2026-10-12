@@ -1,6 +1,5 @@
 package net.redchujelly.cluttered.block.custom;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -11,15 +10,9 @@ import org.jetbrains.annotations.Nullable;
 
 
 public class DirectionalPillarBlock extends DirectionalBlock {
-    public static final MapCodec<DirectionalPillarBlock> CODEC = simpleCodec(DirectionalPillarBlock::new);
 
     public DirectionalPillarBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<? extends DirectionalBlock> codec() {
-        return CODEC;
     }
 
     @Nullable

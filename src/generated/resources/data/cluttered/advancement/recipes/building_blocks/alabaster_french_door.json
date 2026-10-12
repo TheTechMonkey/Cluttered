@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:alabaster_french_door"
+        "recipes": "cluttered:alabaster_french_door"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

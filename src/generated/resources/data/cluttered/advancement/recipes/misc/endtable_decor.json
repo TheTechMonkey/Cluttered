@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:endtable_decor"
+        "recipes": "cluttered:endtable_decor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

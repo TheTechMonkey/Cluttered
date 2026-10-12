@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:black_cat_window_pane"
+        "recipes": "cluttered:black_cat_window_pane"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:salt_pepper_shakers"
+        "recipes": "cluttered:salt_pepper_shakers"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:puzzle_piece_table_blue"
+        "recipes": "cluttered:puzzle_piece_table_blue"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

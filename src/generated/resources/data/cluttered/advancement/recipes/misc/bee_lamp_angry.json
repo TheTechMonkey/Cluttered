@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:bee_lamp_angry"
+        "recipes": "cluttered:bee_lamp_angry"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

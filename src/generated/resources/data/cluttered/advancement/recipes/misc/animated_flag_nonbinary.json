@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:animated_flag_nonbinary"
+        "recipes": "cluttered:animated_flag_nonbinary"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

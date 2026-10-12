@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:rubiks_cube_pastel"
+        "recipes": "cluttered:rubiks_cube_pastel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

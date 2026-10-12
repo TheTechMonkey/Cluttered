@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:willow_button"
+        "recipes": "cluttered:willow_button"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

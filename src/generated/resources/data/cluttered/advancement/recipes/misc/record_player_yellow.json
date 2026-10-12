@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:record_player_yellow"
+        "recipes": "cluttered:record_player_yellow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:antique_mini_table"
+        "recipes": "cluttered:antique_mini_table"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

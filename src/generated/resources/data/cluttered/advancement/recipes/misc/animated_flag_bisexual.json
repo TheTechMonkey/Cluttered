@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:animated_flag_bisexual"
+        "recipes": "cluttered:animated_flag_bisexual"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

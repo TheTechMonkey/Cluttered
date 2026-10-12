@@ -357,7 +357,7 @@ public class HandDrillItem extends Item {
                 }
                 else if (state.getBlock() instanceof BracketBlock){
                     level.setBlock(pos, state.setValue(BracketBlock.OFFSET, !state.getValue(BracketBlock.OFFSET)), 2);
-                    level.playSound(null, pos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS);
+                    level.playSound(null, pos, SoundEvents.AXE_SCRAPE.value(), SoundSource.BLOCKS);
                     return InteractionResult.SUCCESS;
                 }
                 if (state.hasProperty(BlockStateProperties.FACING)) {
@@ -398,7 +398,7 @@ public class HandDrillItem extends Item {
         else if (facing == Direction.DOWN) {facing = Direction.NORTH;}
         else {facing = facing.getClockWise();}
         level.setBlock(pos, state.setValue(BlockStateProperties.FACING, facing), 2);
-        level.playSound(null, pos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS);
+        level.playSound(null, pos, SoundEvents.AXE_SCRAPE.value(), SoundSource.BLOCKS);
     }
 
     private static void axisRotation(BlockState state, Level level, BlockPos pos){
@@ -408,7 +408,7 @@ public class HandDrillItem extends Item {
         else if (axis == Direction.Axis.Y){axis = Direction.Axis.Z;}
         else axis = Direction.Axis.X;
         level.setBlock(pos, state.setValue(BlockStateProperties.AXIS, axis), 2);
-        level.playSound(null, pos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS);
+        level.playSound(null, pos, SoundEvents.AXE_SCRAPE.value(), SoundSource.BLOCKS);
     }
 
     private static void horizontalFacingRotation(BlockState state, Level level, BlockPos pos) {
@@ -416,7 +416,7 @@ public class HandDrillItem extends Item {
         Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
         facing = facing.getClockWise();
         level.setBlock(pos, state.setValue(BlockStateProperties.HORIZONTAL_FACING, facing), 2);
-        level.playSound(null, pos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS);
+        level.playSound(null, pos, SoundEvents.AXE_SCRAPE.value(), SoundSource.BLOCKS);
     }
 
     private static void horizontalAxisRotation(BlockState state, Level level, BlockPos pos){
@@ -425,7 +425,7 @@ public class HandDrillItem extends Item {
         if (axis == Direction.Axis.X) {axis = Direction.Axis.Z;}
         else axis = Direction.Axis.X;
         level.setBlock(pos, state.setValue(BlockStateProperties.HORIZONTAL_AXIS, axis), 2);
-        level.playSound(null, pos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS);
+        level.playSound(null, pos, SoundEvents.AXE_SCRAPE.value(), SoundSource.BLOCKS);
     }
 
     private BlockState swapAxisAndFacing(BlockState state, BlockState nextState, Direction playerFacing){

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:flower_shelf_green"
+        "recipes": "cluttered:flower_shelf_green"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

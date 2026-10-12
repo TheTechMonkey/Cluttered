@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:poplar_slab"
+        "recipes": "cluttered:poplar_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

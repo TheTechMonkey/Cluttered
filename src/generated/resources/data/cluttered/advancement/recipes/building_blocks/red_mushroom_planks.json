@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:red_mushroom_planks"
+        "recipes": "cluttered:red_mushroom_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

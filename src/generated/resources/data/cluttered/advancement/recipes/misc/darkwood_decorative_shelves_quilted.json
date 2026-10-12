@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:darkwood_decorative_shelves_quilted"
+        "recipes": "cluttered:darkwood_decorative_shelves_quilted"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

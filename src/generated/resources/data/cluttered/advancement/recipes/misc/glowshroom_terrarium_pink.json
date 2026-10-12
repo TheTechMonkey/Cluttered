@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:glowshroom_terrarium_pink"
+        "recipes": "cluttered:glowshroom_terrarium_pink"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

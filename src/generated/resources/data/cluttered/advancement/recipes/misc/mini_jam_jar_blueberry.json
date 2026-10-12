@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:mini_jam_jar_blueberry"
+        "recipes": "cluttered:mini_jam_jar_blueberry"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

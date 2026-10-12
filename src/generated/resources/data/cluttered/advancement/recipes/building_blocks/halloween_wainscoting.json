@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:halloween_wainscoting"
+        "recipes": "cluttered:halloween_wainscoting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:colosseo_pillar"
+        "recipes": "cluttered:colosseo_pillar"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

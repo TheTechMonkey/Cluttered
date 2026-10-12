@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:crabapple_fence"
+        "recipes": "cluttered:crabapple_fence"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:traditional_radio"
+        "recipes": "cluttered:traditional_radio"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

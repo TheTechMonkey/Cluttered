@@ -2,28 +2,26 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "bonus_rolls": 0.0,
+      "bonus_rolls": 0,
       "entries": [
         {
           "type": "minecraft:alternatives",
           "children": [
             {
               "type": "minecraft:item",
-              "conditions": [
-                {
-                  "condition": "minecraft:match_tool",
-                  "predicate": {
-                    "enchantments": [
-                      {
-                        "enchantment": "minecraft:silk_touch",
-                        "levels": {
-                          "min": 1
-                        }
+              "condition": {
+                "type": "minecraft:match_tool",
+                "predicate": {
+                  "enchantments": [
+                    {
+                      "enchantment": "minecraft:silk_touch",
+                      "levels": {
+                        "min": 1
                       }
-                    ]
-                  }
+                    }
+                  ]
                 }
-              ],
+              },
               "name": "cluttered:red_mushroom_cap"
             },
             {
@@ -31,27 +29,25 @@
               "children": [
                 {
                   "type": "minecraft:item",
-                  "conditions": [
-                    {
-                      "chances": [
-                        0.1,
-                        0.14285715,
-                        0.25,
-                        1.0
-                      ],
-                      "condition": "minecraft:table_bonus",
-                      "enchantment": "minecraft:fortune"
-                    }
-                  ],
-                  "functions": [
+                  "condition": {
+                    "chances": [
+                      0.1,
+                      0.14285715,
+                      0.25,
+                      1
+                    ],
+                    "type": "minecraft:table_bonus",
+                    "enchantment": "minecraft:fortune"
+                  },
+                  "modifier": [
                     {
                       "add": false,
                       "count": {
                         "type": "minecraft:uniform",
-                        "max": 3.0,
-                        "min": 1.0
+                        "max": 3,
+                        "min": 1
                       },
-                      "function": "minecraft:set_count"
+                      "type": "minecraft:set_count"
                     }
                   ],
                   "name": "cluttered:fly_agaric"
@@ -61,16 +57,14 @@
                   "name": "cluttered:red_mushroom_cap"
                 }
               ],
-              "conditions": [
-                {
-                  "condition": "minecraft:survives_explosion"
-                }
-              ]
+              "condition": {
+                "type": "minecraft:survives_explosion"
+              }
             }
           ]
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "cluttered:blocks/red_mushroom_cap"

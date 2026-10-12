@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:willow_trapdoor"
+        "recipes": "cluttered:willow_trapdoor"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

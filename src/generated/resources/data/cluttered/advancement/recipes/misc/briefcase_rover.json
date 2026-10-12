@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:briefcase_rover"
+        "recipes": "cluttered:briefcase_rover"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

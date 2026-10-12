@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:endtable_wood"
+        "recipes": "cluttered:endtable_wood"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

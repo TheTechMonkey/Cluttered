@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:havana_cabinet"
+        "recipes": "cluttered:havana_cabinet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

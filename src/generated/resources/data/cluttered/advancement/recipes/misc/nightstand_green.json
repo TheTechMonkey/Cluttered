@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:nightstand_green"
+        "recipes": "cluttered:nightstand_green"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

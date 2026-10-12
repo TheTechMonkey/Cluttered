@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:flower_carpet_poplar"
+        "recipes": "cluttered:flower_carpet_poplar"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

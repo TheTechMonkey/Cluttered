@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:deep_chalcedony_pillar_base_from_deep_chalcedony_polished_stonecutting"
+        "recipes": "cluttered:deep_chalcedony_pillar_base_from_deep_chalcedony_polished_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

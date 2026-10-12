@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:picnic_basket"
+        "recipes": "cluttered:picnic_basket"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

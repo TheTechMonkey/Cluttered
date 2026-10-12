@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:row_of_small_books_pastel"
+        "recipes": "cluttered:row_of_small_books_pastel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

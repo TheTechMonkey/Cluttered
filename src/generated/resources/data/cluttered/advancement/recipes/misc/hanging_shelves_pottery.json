@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:hanging_shelves_pottery"
+        "recipes": "cluttered:hanging_shelves_pottery"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

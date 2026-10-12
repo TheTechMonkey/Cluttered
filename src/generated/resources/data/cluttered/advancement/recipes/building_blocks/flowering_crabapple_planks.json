@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:flowering_crabapple_planks"
+        "recipes": "cluttered:flowering_crabapple_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:cat_plant_pot_orange"
+        "recipes": "cluttered:cat_plant_pot_orange"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

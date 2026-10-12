@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:card_index"
+        "recipes": "cluttered:card_index"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

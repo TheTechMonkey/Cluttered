@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:rito_wooden_books"
+        "recipes": "cluttered:rito_wooden_books"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

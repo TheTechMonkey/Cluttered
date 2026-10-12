@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:two_flower_pots"
+        "recipes": "cluttered:two_flower_pots"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

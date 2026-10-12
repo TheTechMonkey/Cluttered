@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:bulletin_board_cluttered"
+        "recipes": "cluttered:bulletin_board_cluttered"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

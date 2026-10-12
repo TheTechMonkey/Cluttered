@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:darkwood_chair_quilted"
+        "recipes": "cluttered:darkwood_chair_quilted"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

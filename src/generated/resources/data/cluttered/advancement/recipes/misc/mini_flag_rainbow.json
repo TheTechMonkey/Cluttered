@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:mini_flag_rainbow"
+        "recipes": "cluttered:mini_flag_rainbow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

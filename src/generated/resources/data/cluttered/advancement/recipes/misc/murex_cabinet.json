@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:murex_cabinet"
+        "recipes": "cluttered:murex_cabinet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

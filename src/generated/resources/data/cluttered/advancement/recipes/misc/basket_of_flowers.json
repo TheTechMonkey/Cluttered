@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:basket_of_flowers"
+        "recipes": "cluttered:basket_of_flowers"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

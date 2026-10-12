@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:hanging_plant_pot_flowers"
+        "recipes": "cluttered:hanging_plant_pot_flowers"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

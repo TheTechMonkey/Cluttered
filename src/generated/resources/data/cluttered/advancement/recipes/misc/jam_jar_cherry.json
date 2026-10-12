@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:jam_jar_cherry"
+        "recipes": "cluttered:jam_jar_cherry"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

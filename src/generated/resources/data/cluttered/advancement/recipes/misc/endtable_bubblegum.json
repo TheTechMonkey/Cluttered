@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:endtable_bubblegum"
+        "recipes": "cluttered:endtable_bubblegum"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

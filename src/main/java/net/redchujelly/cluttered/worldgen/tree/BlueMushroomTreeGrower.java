@@ -1,16 +1,17 @@
 package net.redchujelly.cluttered.worldgen.tree;
 
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.redchujelly.cluttered.worldgen.ClutteredConfiguredFeatures;
 
-import java.util.Optional;
 
 public final class BlueMushroomTreeGrower {
     public static final TreeGrower INSTANCE = new TreeGrower(
             "cluttered_blue_mushroom",
-            Optional.empty(),
-            Optional.of(ClutteredConfiguredFeatures.BLUE_MUSHROOM_KEY),
-            Optional.empty());
+            WeightedList.of(ClutteredConfiguredFeatures.BLUE_MUSHROOM_KEY),
+            WeightedList.of(),
+            WeightedList.of(),
+            ClutteredConfiguredFeatures.BLUE_MUSHROOM_KEY);
 
     private BlueMushroomTreeGrower() {
     }

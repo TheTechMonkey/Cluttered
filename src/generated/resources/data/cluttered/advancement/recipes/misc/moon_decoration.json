@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:moon_decoration"
+        "recipes": "cluttered:moon_decoration"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

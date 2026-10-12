@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:imperial_table"
+        "recipes": "cluttered:imperial_table"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

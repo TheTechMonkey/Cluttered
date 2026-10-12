@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:tarrytown_stove"
+        "recipes": "cluttered:tarrytown_stove"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

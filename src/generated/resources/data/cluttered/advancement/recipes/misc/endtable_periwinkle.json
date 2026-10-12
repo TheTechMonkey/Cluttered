@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:endtable_periwinkle"
+        "recipes": "cluttered:endtable_periwinkle"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

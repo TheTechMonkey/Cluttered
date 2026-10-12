@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:alabaster_window_pane"
+        "recipes": "cluttered:alabaster_window_pane"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

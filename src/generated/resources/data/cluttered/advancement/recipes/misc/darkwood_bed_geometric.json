@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:darkwood_bed_geometric"
+        "recipes": "cluttered:darkwood_bed_geometric"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

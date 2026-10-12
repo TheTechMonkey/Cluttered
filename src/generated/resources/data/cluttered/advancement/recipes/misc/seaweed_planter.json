@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:seaweed_planter"
+        "recipes": "cluttered:seaweed_planter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

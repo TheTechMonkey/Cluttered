@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:newspaper_pile_short"
+        "recipes": "cluttered:newspaper_pile_short"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

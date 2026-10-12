@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:retro_rainbow_wallpaper"
+        "recipes": "cluttered:retro_rainbow_wallpaper"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

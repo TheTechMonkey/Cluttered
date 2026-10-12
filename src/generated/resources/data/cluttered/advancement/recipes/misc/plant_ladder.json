@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:plant_ladder"
+        "recipes": "cluttered:plant_ladder"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

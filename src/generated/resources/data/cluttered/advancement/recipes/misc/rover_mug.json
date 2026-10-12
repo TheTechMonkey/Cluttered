@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:rover_mug"
+        "recipes": "cluttered:rover_mug"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

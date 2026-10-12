@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:office_supplies_b"
+        "recipes": "cluttered:office_supplies_b"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:fwish_bookcase"
+        "recipes": "cluttered:fwish_bookcase"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

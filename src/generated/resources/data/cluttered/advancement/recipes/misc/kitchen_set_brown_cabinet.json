@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:kitchen_set_brown_cabinet"
+        "recipes": "cluttered:kitchen_set_brown_cabinet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

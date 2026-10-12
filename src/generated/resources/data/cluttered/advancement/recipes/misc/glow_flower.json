@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:glow_flower"
+        "recipes": "cluttered:glow_flower"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:armchair_flower"
+        "recipes": "cluttered:armchair_flower"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

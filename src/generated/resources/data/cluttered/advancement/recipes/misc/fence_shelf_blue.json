@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:fence_shelf_blue"
+        "recipes": "cluttered:fence_shelf_blue"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

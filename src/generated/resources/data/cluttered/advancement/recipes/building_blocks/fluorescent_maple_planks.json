@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:fluorescent_maple_planks"
+        "recipes": "cluttered:fluorescent_maple_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

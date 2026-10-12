@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:red_mushroom_hanging_sign"
+        "recipes": "cluttered:red_mushroom_hanging_sign"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

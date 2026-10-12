@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:cupid_bench"
+        "recipes": "cluttered:cupid_bench"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

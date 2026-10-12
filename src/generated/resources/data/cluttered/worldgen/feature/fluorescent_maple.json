@@ -1,0 +1,58 @@
+{
+  "type": "minecraft:tree",
+  "below_trunk_provider": {
+    "id": "minecraft:dirt"
+  },
+  "decorators": [],
+  "foliage_placer": {
+    "type": "cluttered:maple_foliage_placer",
+    "offset": 5,
+    "radius": 4
+  },
+  "foliage_provider": {
+    "type": "minecraft:weighted",
+    "entries": [
+      {
+        "data": {
+          "id": "cluttered:fluorescent_maple_leaves",
+          "properties": {
+            "distance": "7",
+            "persistent": "false",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 25
+      },
+      {
+        "data": {
+          "id": "cluttered:flowering_fluorescent_maple_leaves",
+          "properties": {
+            "distance": "7",
+            "persistent": "false",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 5
+      }
+    ]
+  },
+  "ignore_vines": false,
+  "minimum_size": {
+    "type": "minecraft:two_layers_feature_size",
+    "limit": 4,
+    "lower_size": 0,
+    "upper_size": 3
+  },
+  "trunk_placer": {
+    "type": "cluttered:maple_trunk_placer",
+    "base_height": 6,
+    "height_rand_a": 1,
+    "height_rand_b": 3
+  },
+  "trunk_provider": {
+    "id": "cluttered:fluorescent_maple_log",
+    "properties": {
+      "axis": "y"
+    }
+  }
+}

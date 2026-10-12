@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:desk_green_cluttered"
+        "recipes": "cluttered:desk_green_cluttered"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -1,6 +1,5 @@
 package net.redchujelly.cluttered.block.custom.furniture;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -26,7 +25,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class SmallLampBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
-    public static final MapCodec<SmallLampBlock> CODEC = simpleCodec(SmallLampBlock::new);
     //public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -41,11 +39,6 @@ public class SmallLampBlock extends HorizontalDirectionalBlock implements Simple
         super(pProperties);
         this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));
         pProperties.noOcclusion();
-    }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
     }
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
         //return state.getValue(LIT) ? 15 : 0;

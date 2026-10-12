@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:wooden_window_divided"
+        "recipes": "cluttered:wooden_window_divided"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:crabapple_stairs"
+        "recipes": "cluttered:crabapple_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

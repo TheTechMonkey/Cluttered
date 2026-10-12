@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:willow_bookshelf_black_cat"
+        "recipes": "cluttered:willow_bookshelf_black_cat"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

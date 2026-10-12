@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:lunar_observatory_books"
+        "recipes": "cluttered:lunar_observatory_books"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

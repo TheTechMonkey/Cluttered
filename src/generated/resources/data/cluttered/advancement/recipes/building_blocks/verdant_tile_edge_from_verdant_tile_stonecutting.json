@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:verdant_tile_edge_from_verdant_tile_stonecutting"
+        "recipes": "cluttered:verdant_tile_edge_from_verdant_tile_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

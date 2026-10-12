@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:sewing_machine_antique"
+        "recipes": "cluttered:sewing_machine_antique"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

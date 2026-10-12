@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:table_with_white_tablecloth"
+        "recipes": "cluttered:table_with_white_tablecloth"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

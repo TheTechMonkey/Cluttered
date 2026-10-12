@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:violet_screen"
+        "recipes": "cluttered:violet_screen"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

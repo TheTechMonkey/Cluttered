@@ -8,7 +8,8 @@
     "${mod_authors}"
   ],
   "contact": {
-    "sources": "https://github.com/RedChuJelly/Cluttered"
+    "sources": "https://github.com/TheTechMonkey/Cluttered",
+    "issues": "https://github.com/TheTechMonkey/Cluttered/issues"
   },
   "license": "${mod_license}",
   "environment": "*",

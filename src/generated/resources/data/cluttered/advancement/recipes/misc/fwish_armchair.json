@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:fwish_armchair"
+        "recipes": "cluttered:fwish_armchair"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

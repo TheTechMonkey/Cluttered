@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:rialto_gold_wallpaper"
+        "recipes": "cluttered:rialto_gold_wallpaper"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

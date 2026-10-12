@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:sand_seal_plush_green"
+        "recipes": "cluttered:sand_seal_plush_green"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

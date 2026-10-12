@@ -2,28 +2,24 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
+      "bonus_rolls": 0,
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "block": "cluttered:blue_mushroom_door",
-              "condition": "minecraft:block_state_property",
-              "properties": {
-                "half": "lower"
-              }
+          "condition": {
+            "blocks": "cluttered:blue_mushroom_door",
+            "type": "minecraft:match_block",
+            "state": {
+              "half": "lower"
             }
-          ],
+          },
           "name": "cluttered:blue_mushroom_door"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "cluttered:blocks/blue_mushroom_door"

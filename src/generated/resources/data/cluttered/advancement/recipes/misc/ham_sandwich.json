@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:ham_sandwich"
+        "recipes": "cluttered:ham_sandwich"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

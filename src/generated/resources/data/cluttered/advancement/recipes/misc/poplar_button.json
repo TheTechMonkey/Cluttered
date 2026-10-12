@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:poplar_button"
+        "recipes": "cluttered:poplar_button"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

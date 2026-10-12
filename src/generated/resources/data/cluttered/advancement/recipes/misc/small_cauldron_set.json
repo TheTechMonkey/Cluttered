@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:small_cauldron_set"
+        "recipes": "cluttered:small_cauldron_set"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

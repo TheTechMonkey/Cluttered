@@ -6,7 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.redchujelly.cluttered.setup.FoliagePlacerTypeRegistration;
@@ -29,7 +29,7 @@ public class BlueMushroomFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected void createFoliage(WorldGenLevel pLevel, FoliageSetter pBlockSetter, RandomSource pRandom, TreeConfiguration pConfig, int pMaxFreeTreeHeight, FoliageAttachment pAttachment, int pFoliageHeight, int pFoliageRadius, int pOffset) {
+    protected void createFoliage(WorldGenLevel pLevel, FoliageSetter pBlockSetter, RandomSource pRandom, TreeFeature pConfig, int pMaxFreeTreeHeight, FoliageAttachment pAttachment, int pFoliageHeight, int pFoliageRadius, int pOffset) {
         for (int i = 0; i < height;){
             placeLeavesRow(pLevel, pBlockSetter, pRandom, pConfig, pAttachment.pos(), 3 + i, -i, pAttachment.doubleTrunk());
             i++;
@@ -38,7 +38,7 @@ public class BlueMushroomFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    public int foliageHeight(RandomSource pRandom, int pHeight, TreeConfiguration pConfig) {
+    public int foliageHeight(RandomSource pRandom, int pHeight, TreeFeature pConfig) {
         return this.height;
     }
 

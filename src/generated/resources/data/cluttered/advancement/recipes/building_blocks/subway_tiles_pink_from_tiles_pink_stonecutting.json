@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:subway_tiles_pink_from_tiles_pink_stonecutting"
+        "recipes": "cluttered:subway_tiles_pink_from_tiles_pink_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

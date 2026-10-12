@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:antique_library_books"
+        "recipes": "cluttered:antique_library_books"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

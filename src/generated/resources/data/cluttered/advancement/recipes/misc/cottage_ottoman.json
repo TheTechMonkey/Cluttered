@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:cottage_ottoman"
+        "recipes": "cluttered:cottage_ottoman"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

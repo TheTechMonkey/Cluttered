@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:red_mushroom_table"
+        "recipes": "cluttered:red_mushroom_table"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

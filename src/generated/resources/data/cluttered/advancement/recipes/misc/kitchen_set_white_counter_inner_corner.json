@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:kitchen_set_white_counter_inner_corner"
+        "recipes": "cluttered:kitchen_set_white_counter_inner_corner"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

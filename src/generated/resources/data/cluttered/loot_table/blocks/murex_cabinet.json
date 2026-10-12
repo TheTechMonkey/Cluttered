@@ -2,28 +2,24 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
+      "bonus_rolls": 0,
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "block": "cluttered:murex_cabinet",
-              "condition": "minecraft:block_state_property",
-              "properties": {
-                "part": "1"
-              }
+          "condition": {
+            "blocks": "cluttered:murex_cabinet",
+            "type": "minecraft:match_block",
+            "state": {
+              "part": "1"
             }
-          ],
+          },
           "name": "cluttered:murex_cabinet"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "cluttered:blocks/murex_cabinet"

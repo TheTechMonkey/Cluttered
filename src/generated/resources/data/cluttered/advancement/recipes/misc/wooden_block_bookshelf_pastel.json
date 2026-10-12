@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:wooden_block_bookshelf_pastel"
+        "recipes": "cluttered:wooden_block_bookshelf_pastel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

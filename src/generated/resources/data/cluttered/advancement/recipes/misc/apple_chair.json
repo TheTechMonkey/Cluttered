@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:apple_chair"
+        "recipes": "cluttered:apple_chair"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

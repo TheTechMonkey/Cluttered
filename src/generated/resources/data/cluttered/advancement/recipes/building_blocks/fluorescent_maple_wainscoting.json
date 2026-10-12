@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:fluorescent_maple_wainscoting"
+        "recipes": "cluttered:fluorescent_maple_wainscoting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

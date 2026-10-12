@@ -6,7 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.redchujelly.cluttered.setup.FoliagePlacerTypeRegistration;
@@ -24,7 +24,7 @@ public class CrabappleFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    public int foliageHeight(RandomSource pRandom, int pHeight, TreeConfiguration pConfig) {
+    public int foliageHeight(RandomSource pRandom, int pHeight, TreeFeature pConfig) {
         return this.height;
     }
 
@@ -34,7 +34,7 @@ public class CrabappleFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected void createFoliage(WorldGenLevel pLevel, FoliageSetter pBlockSetter, RandomSource pRandom, TreeConfiguration pConfig, int pMaxFreeTreeHeight, FoliageAttachment pAttachment, int pFoliageHeight, int pFoliageRadius, int pOffset) {
+    protected void createFoliage(WorldGenLevel pLevel, FoliageSetter pBlockSetter, RandomSource pRandom, TreeFeature pConfig, int pMaxFreeTreeHeight, FoliageAttachment pAttachment, int pFoliageHeight, int pFoliageRadius, int pOffset) {
         for (int i = 0; i < this.height;) {
             if (i == 0) {
                 placeLeavesRow(pLevel, pBlockSetter, pRandom, pConfig, pAttachment.pos().above(), 1, -i, pAttachment.doubleTrunk());

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:willow_slab"
+        "recipes": "cluttered:willow_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

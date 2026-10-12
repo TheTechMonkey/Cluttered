@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:pumpkin_bookshelf"
+        "recipes": "cluttered:pumpkin_bookshelf"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

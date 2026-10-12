@@ -9,7 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
@@ -37,7 +37,7 @@ public class MapleTrunkPlacer extends TrunkPlacer {
     }
 
     @Override
-    public List<FoliagePlacer.FoliageAttachment> placeTrunk(WorldGenLevel pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, RandomSource pRandom, int pFreeTreeHeight, BlockPos pPos, TreeConfiguration pConfig) {
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(WorldGenLevel pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, RandomSource pRandom, int pFreeTreeHeight, BlockPos pPos, TreeFeature pConfig) {
         placeBelowTrunkBlock(pLevel, pBlockSetter, pRandom, pPos.below(), pConfig);
 
         List<Direction> directions = List.of(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
@@ -91,7 +91,7 @@ public class MapleTrunkPlacer extends TrunkPlacer {
                         if (j == branchLength){
                             tempHeight++;
                         }
-                        BlockState log = pConfig.trunkProvider.getState(pLevel, pRandom, pPos).setValue(RotatedPillarBlock.AXIS, direction.getAxis());
+                        BlockState log = pConfig.trunkProvider().value().getState(pLevel, pRandom, pPos).setValue(RotatedPillarBlock.AXIS, direction.getAxis());
                         pBlockSetter.accept(pPos.above(tempHeight).relative(direction, j), (BlockState) Function.identity().apply(log));
                         j++;
                     }
@@ -114,7 +114,7 @@ public class MapleTrunkPlacer extends TrunkPlacer {
                         if (j == branchLength){
                             tempHeight++;
                         }
-                        BlockState log = pConfig.trunkProvider.getState(pLevel, pRandom, pPos).setValue(RotatedPillarBlock.AXIS, direction.getAxis());
+                        BlockState log = pConfig.trunkProvider().value().getState(pLevel, pRandom, pPos).setValue(RotatedPillarBlock.AXIS, direction.getAxis());
                         pBlockSetter.accept(pPos.above(tempHeight).relative(direction, j), (BlockState) Function.identity().apply(log));
                         j++;
                     }
@@ -134,7 +134,7 @@ public class MapleTrunkPlacer extends TrunkPlacer {
                         if (j == branchLength){
                             tempHeight++;
                         }
-                        BlockState log = pConfig.trunkProvider.getState(pLevel, pRandom, pPos).setValue(RotatedPillarBlock.AXIS, direction.getAxis());
+                        BlockState log = pConfig.trunkProvider().value().getState(pLevel, pRandom, pPos).setValue(RotatedPillarBlock.AXIS, direction.getAxis());
                         pBlockSetter.accept(pPos.above(tempHeight).relative(direction, j), (BlockState) Function.identity().apply(log));
                         j++;
                     }

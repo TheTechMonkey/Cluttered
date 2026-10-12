@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:box_of_paints"
+        "recipes": "cluttered:box_of_paints"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

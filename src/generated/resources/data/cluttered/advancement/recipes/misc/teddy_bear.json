@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:teddy_bear"
+        "recipes": "cluttered:teddy_bear"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

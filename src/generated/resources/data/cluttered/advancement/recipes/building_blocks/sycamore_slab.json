@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:sycamore_slab"
+        "recipes": "cluttered:sycamore_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

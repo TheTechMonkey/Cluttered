@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:art_nouveau_door"
+        "recipes": "cluttered:art_nouveau_door"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

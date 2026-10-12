@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:polaroid_camera"
+        "recipes": "cluttered:polaroid_camera"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

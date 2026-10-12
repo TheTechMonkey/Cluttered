@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:spool_of_thread_yellow"
+        "recipes": "cluttered:spool_of_thread_yellow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

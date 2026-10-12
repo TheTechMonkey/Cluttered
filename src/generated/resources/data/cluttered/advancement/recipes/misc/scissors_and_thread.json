@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:scissors_and_thread"
+        "recipes": "cluttered:scissors_and_thread"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

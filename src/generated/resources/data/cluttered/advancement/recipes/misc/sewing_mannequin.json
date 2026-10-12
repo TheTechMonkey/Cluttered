@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:sewing_mannequin"
+        "recipes": "cluttered:sewing_mannequin"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

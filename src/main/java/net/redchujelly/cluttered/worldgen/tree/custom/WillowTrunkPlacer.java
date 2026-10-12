@@ -9,7 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
@@ -35,7 +35,7 @@ public class WillowTrunkPlacer extends TrunkPlacer {
     }
 
     @Override
-    public List<FoliagePlacer.FoliageAttachment> placeTrunk(WorldGenLevel pLevel, BiConsumer<BlockPos, BlockState> biConsumer, RandomSource randomSource, int freeTreeHeight, BlockPos pPos, TreeConfiguration treeConfiguration) {
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(WorldGenLevel pLevel, BiConsumer<BlockPos, BlockState> biConsumer, RandomSource randomSource, int freeTreeHeight, BlockPos pPos, TreeFeature treeConfiguration) {
         placeBelowTrunkBlock(pLevel, biConsumer, randomSource, pPos.below(), treeConfiguration);
 
         List<FoliagePlacer.FoliageAttachment> foliageSpots = new ArrayList<>();
@@ -94,9 +94,9 @@ public class WillowTrunkPlacer extends TrunkPlacer {
                     branchAngle -= 360;
                 }
 
-                BlockState logDirection = treeConfiguration.trunkProvider.getState(pLevel, randomSource, pPos).setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
+                BlockState logDirection = treeConfiguration.trunkProvider().value().getState(pLevel, randomSource, pPos).setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
                 if ((branchAngle > 45 && branchAngle <= 135) || (branchAngle < 315 && branchAngle >= 225)) {
-                    logDirection = treeConfiguration.trunkProvider.getState(pLevel, randomSource, pPos).setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+                    logDirection = treeConfiguration.trunkProvider().value().getState(pLevel, randomSource, pPos).setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
                 }
 
                 BlockState pastLogDirection = logDirection;
@@ -118,7 +118,7 @@ public class WillowTrunkPlacer extends TrunkPlacer {
                         }
                         if (randomSource.nextFloat() < k / (branchMaxBlocks * (float) (1 + randomSource.nextInt(0, 2)))) {
                             nextPos = nextPos.below();
-                            logDirection = treeConfiguration.trunkProvider.getState(pLevel, randomSource, pPos).setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
+                            logDirection = treeConfiguration.trunkProvider().value().getState(pLevel, randomSource, pPos).setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
                             wentDown = true;
                         }
                         biConsumer.accept(nextPos, (BlockState) Function.identity().apply(logDirection));
@@ -144,7 +144,7 @@ public class WillowTrunkPlacer extends TrunkPlacer {
                         }
                         if (randomSource.nextFloat() < k / (branchMaxBlocks * (float) (1 + randomSource.nextInt(0, 2)))) {
                             nextPos = nextPos.below();
-                            logDirection = treeConfiguration.trunkProvider.getState(pLevel, randomSource, pPos).setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
+                            logDirection = treeConfiguration.trunkProvider().value().getState(pLevel, randomSource, pPos).setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
                             wentDown = true;
                         }
                         biConsumer.accept(nextPos, (BlockState) Function.identity().apply(logDirection));
@@ -170,7 +170,7 @@ public class WillowTrunkPlacer extends TrunkPlacer {
                         }
                         if (randomSource.nextFloat() < k / (branchMaxBlocks * (float) (1 + randomSource.nextInt(0, 2)))) {
                             nextPos = nextPos.below();
-                            logDirection = treeConfiguration.trunkProvider.getState(pLevel, randomSource, pPos).setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
+                            logDirection = treeConfiguration.trunkProvider().value().getState(pLevel, randomSource, pPos).setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
                             wentDown = true;
                         }
                         biConsumer.accept(nextPos, (BlockState) Function.identity().apply(logDirection));
@@ -197,7 +197,7 @@ public class WillowTrunkPlacer extends TrunkPlacer {
                         }
                         if (randomSource.nextFloat() < k / (branchMaxBlocks * (float) (1 + randomSource.nextInt(0, 2)))) {
                             nextPos = nextPos.below();
-                            logDirection = treeConfiguration.trunkProvider.getState(pLevel, randomSource, pPos).setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
+                            logDirection = treeConfiguration.trunkProvider().value().getState(pLevel, randomSource, pPos).setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
                             wentDown = true;
                         }
                         biConsumer.accept(nextPos, (BlockState) Function.identity().apply(logDirection));

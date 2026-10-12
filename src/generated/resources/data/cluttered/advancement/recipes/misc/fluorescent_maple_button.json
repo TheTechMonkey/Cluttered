@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:fluorescent_maple_button"
+        "recipes": "cluttered:fluorescent_maple_button"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

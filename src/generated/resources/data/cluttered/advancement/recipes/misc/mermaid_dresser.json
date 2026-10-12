@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:mermaid_dresser"
+        "recipes": "cluttered:mermaid_dresser"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

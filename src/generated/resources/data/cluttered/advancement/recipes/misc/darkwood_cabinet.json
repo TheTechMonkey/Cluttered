@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:darkwood_cabinet"
+        "recipes": "cluttered:darkwood_cabinet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:blueberry_muffin"
+        "recipes": "cluttered:blueberry_muffin"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

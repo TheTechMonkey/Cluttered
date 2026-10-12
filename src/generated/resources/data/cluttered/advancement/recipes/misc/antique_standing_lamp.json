@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:antique_standing_lamp"
+        "recipes": "cluttered:antique_standing_lamp"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

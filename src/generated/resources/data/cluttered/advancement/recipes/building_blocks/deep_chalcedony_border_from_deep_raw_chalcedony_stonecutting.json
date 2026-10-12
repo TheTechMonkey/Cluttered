@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:deep_chalcedony_border_from_deep_raw_chalcedony_stonecutting"
+        "recipes": "cluttered:deep_chalcedony_border_from_deep_raw_chalcedony_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

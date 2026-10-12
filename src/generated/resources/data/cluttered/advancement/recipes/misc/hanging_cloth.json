@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:hanging_cloth"
+        "recipes": "cluttered:hanging_cloth"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

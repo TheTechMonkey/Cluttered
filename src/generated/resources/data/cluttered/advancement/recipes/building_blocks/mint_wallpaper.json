@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:mint_wallpaper"
+        "recipes": "cluttered:mint_wallpaper"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

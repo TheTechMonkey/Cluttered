@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:flower_desk_lamp"
+        "recipes": "cluttered:flower_desk_lamp"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

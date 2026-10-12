@@ -76,7 +76,7 @@ public class ChairBlock extends CustomHorizontalBlock implements SimpleWaterlogg
         return this.defaultBlockState().setValue(WATERLOGGED, isWaterlogged).setValue(FACING, pContext.getHorizontalDirection().getOpposite());
     }
     public @Nullable PushReaction getPistonPushReaction(BlockState state) {
-        return PushReaction.BLOCK;
+        return PushReaction.IMMOVEABLE;
     }
 
     public float getSeatOffset(){

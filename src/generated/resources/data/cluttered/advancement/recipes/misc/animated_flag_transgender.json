@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:animated_flag_transgender"
+        "recipes": "cluttered:animated_flag_transgender"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

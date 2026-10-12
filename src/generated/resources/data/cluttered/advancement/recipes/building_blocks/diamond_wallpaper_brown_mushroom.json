@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:diamond_wallpaper_brown_mushroom"
+        "recipes": "cluttered:diamond_wallpaper_brown_mushroom"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

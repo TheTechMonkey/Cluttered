@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:mini_jam_jar_honey"
+        "recipes": "cluttered:mini_jam_jar_honey"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

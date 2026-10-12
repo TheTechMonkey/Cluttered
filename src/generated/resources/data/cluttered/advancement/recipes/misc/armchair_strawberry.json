@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:armchair_strawberry"
+        "recipes": "cluttered:armchair_strawberry"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

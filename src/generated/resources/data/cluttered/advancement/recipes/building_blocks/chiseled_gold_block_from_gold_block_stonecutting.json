@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:chiseled_gold_block_from_gold_block_stonecutting"
+        "recipes": "cluttered:chiseled_gold_block_from_gold_block_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

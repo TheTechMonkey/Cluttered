@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:tartan_yellow_wallpaper"
+        "recipes": "cluttered:tartan_yellow_wallpaper"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

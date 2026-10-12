@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:tiles_purple_from_purple_concrete_stonecutting"
+        "recipes": "cluttered:tiles_purple_from_purple_concrete_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

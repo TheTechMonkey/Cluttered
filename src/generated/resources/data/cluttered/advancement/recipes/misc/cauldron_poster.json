@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:cauldron_poster"
+        "recipes": "cluttered:cauldron_poster"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:marble_sun_block"
+        "recipes": "cluttered:marble_sun_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

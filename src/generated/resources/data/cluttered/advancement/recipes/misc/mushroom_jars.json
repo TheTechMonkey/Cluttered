@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:mushroom_jars"
+        "recipes": "cluttered:mushroom_jars"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

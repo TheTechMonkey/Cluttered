@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:flower_carpet_crabapple"
+        "recipes": "cluttered:flower_carpet_crabapple"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

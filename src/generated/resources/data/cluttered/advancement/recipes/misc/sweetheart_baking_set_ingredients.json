@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:sweetheart_baking_set_ingredients"
+        "recipes": "cluttered:sweetheart_baking_set_ingredients"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

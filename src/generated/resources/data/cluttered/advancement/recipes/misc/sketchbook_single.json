@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:sketchbook_single"
+        "recipes": "cluttered:sketchbook_single"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

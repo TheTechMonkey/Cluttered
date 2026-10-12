@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:sweetheart_table"
+        "recipes": "cluttered:sweetheart_table"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

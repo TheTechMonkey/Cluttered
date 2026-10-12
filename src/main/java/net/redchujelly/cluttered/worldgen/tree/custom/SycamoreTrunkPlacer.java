@@ -9,7 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
@@ -34,7 +34,7 @@ public class SycamoreTrunkPlacer extends TrunkPlacer {
     }
 
     @Override
-    public List<FoliagePlacer.FoliageAttachment> placeTrunk(WorldGenLevel pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, RandomSource pRandom, int pFreeTreeHeight, BlockPos pPos, TreeConfiguration pConfig) {
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(WorldGenLevel pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, RandomSource pRandom, int pFreeTreeHeight, BlockPos pPos, TreeFeature pConfig) {
         placeBelowTrunkBlock(pLevel, pBlockSetter, pRandom, pPos.below(), pConfig);
         List<FoliagePlacer.FoliageAttachment> foliageSpots = new ArrayList<>();
         int maxHeight = pFreeTreeHeight + pRandom.nextInt(heightRandA, heightRandB);
@@ -81,7 +81,7 @@ public class SycamoreTrunkPlacer extends TrunkPlacer {
 
             int branchHeight = pRandom.nextInt(3, maxHeight - 2);
             int branchLength = pRandom.nextInt(2, 5);
-            BlockState log = pConfig.trunkProvider.getState(pLevel, pRandom, pPos).setValue(RotatedPillarBlock.AXIS, branchDirection.getAxis());
+            BlockState log = pConfig.trunkProvider().value().getState(pLevel, pRandom, pPos).setValue(RotatedPillarBlock.AXIS, branchDirection.getAxis());
             BlockPos nextPos = pPos;
 
             //places logs for branches

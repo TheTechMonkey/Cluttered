@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:fluorescent_maple_fence_gate"
+        "recipes": "cluttered:fluorescent_maple_fence_gate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

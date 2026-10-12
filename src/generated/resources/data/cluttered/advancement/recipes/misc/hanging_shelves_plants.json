@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:hanging_shelves_plants"
+        "recipes": "cluttered:hanging_shelves_plants"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

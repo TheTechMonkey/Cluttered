@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:imperial_chair"
+        "recipes": "cluttered:imperial_chair"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

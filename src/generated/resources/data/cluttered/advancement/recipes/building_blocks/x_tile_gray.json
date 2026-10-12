@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:x_tile_gray"
+        "recipes": "cluttered:x_tile_gray"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:cat_mugs_cluttered"
+        "recipes": "cluttered:cat_mugs_cluttered"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

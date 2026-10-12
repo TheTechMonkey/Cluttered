@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:steampunk_lamp"
+        "recipes": "cluttered:steampunk_lamp"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

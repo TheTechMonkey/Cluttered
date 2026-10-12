@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:lovely_love_seat_basic"
+        "recipes": "cluttered:lovely_love_seat_basic"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

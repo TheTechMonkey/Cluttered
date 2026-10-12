@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:coffee_grinder"
+        "recipes": "cluttered:coffee_grinder"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

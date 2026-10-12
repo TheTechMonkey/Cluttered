@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:gumball_machine_purple"
+        "recipes": "cluttered:gumball_machine_purple"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

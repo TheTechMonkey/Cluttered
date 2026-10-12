@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:retro_fridge_yellow"
+        "recipes": "cluttered:retro_fridge_yellow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

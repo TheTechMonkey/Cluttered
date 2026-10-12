@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:flowering_poplar_wainscoting"
+        "recipes": "cluttered:flowering_poplar_wainscoting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

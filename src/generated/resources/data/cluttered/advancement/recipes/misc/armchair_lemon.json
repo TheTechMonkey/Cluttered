@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:armchair_lemon"
+        "recipes": "cluttered:armchair_lemon"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

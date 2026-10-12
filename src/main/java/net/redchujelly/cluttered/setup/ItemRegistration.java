@@ -1,27 +1,21 @@
 package net.redchujelly.cluttered.setup;
 
-import net.fabricmc.fabric.api.registry.FuelValueEvents;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.component.CookingFuel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ResolvableFloat;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ResolvableInt;
 import net.redchujelly.cluttered.platform.BusGroup;
 import net.redchujelly.cluttered.platform.DeferredRegister;
 import net.redchujelly.cluttered.platform.FabricRegistries;
 import net.redchujelly.cluttered.platform.RegistryObject;
 import net.redchujelly.cluttered.Cluttered;
 import net.redchujelly.cluttered.item.HandDrillItem;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ItemRegistration {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(FabricRegistries.ITEMS, Cluttered.MODID);
-    private static final List<FuelEntry> FUEL_ITEMS = new ArrayList<>();
-
-    private record FuelEntry(RegistryObject<? extends Item> item, int burnTime) {
-    }
-
     public static final RegistryObject<Item> HAND_DRILL = ITEMS.register("hand_drill",
             () -> new HandDrillItem(itemProperties("hand_drill").stacksTo(1)));
 
@@ -53,37 +47,29 @@ public class ItemRegistration {
     private static <T extends Block> RegistryObject<Item> registerSign(String name, RegistryObject<T> floorSign, RegistryObject<T> wallSign) {
         String itemName = name + "_sign";
         RegistryObject<Item> item = ITEMS.register(itemName,
-                () -> new SignItem(floorSign.get(), wallSign.get(), itemProperties(itemName).stacksTo(16)){
-                    public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-                        return 200;
-                    }
-                });
-        FUEL_ITEMS.add(new FuelEntry(item, 200));
+                () -> new StandingAndWallBlockItem(floorSign.get(), wallSign.get(), Direction.DOWN,
+                        withCookingFuel(itemProperties(itemName).stacksTo(16), 200)));
         return item;
     }
 
     private static <T extends Block> RegistryObject<Item> registerHangingSign(String name, RegistryObject<T> floorSign, RegistryObject<T> wallSign) {
         String itemName = name + "_hanging_sign";
         RegistryObject<Item> item = ITEMS.register(itemName,
-                () -> new HangingSignItem(floorSign.get(), wallSign.get(), itemProperties(itemName).stacksTo(16)){
-                    public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-                        return 200;
-                    }
-                });
-        FUEL_ITEMS.add(new FuelEntry(item, 200));
+                () -> new HangingSignItem(floorSign.get(), wallSign.get(), withCookingFuel(itemProperties(itemName).stacksTo(16), 200)));
         return item;
     }
 
     public static void registerFabricContent() {
-        FuelValueEvents.BUILD.register((builder, context) -> {
-            for (FuelEntry entry : FUEL_ITEMS) {
-                builder.add(entry.item().get(), entry.burnTime());
-            }
-        });
+        // Fuel values are immutable item components in 26.3 and are installed during item construction.
     }
 
     private static Item.Properties itemProperties(String name) {
         return new Item.Properties().setId(ITEMS.key(name));
+    }
+
+    private static Item.Properties withCookingFuel(Item.Properties properties, int burnTime) {
+        return properties.component(DataComponents.COOKING_FUEL, new CookingFuel(
+                new ResolvableInt.Constant(burnTime), new ResolvableFloat.Constant(1.0F)));
     }
     
 }

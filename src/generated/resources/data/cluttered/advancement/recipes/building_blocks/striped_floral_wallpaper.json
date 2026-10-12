@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:striped_floral_wallpaper"
+        "recipes": "cluttered:striped_floral_wallpaper"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

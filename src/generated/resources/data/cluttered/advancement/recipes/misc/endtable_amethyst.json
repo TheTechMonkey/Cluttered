@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:endtable_amethyst"
+        "recipes": "cluttered:endtable_amethyst"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

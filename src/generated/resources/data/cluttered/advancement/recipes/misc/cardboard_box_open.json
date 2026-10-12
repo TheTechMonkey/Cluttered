@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:cardboard_box_open"
+        "recipes": "cluttered:cardboard_box_open"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

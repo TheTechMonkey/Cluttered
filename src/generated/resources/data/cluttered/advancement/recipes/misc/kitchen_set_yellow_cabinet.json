@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:kitchen_set_yellow_cabinet"
+        "recipes": "cluttered:kitchen_set_yellow_cabinet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:wooden_picket_fence_gate"
+        "recipes": "cluttered:wooden_picket_fence_gate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

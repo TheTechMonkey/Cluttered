@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:garland_black_cat"
+        "recipes": "cluttered:garland_black_cat"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

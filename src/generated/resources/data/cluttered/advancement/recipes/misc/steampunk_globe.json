@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:steampunk_globe"
+        "recipes": "cluttered:steampunk_globe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

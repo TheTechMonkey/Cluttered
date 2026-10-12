@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:chocolate_croissant"
+        "recipes": "cluttered:chocolate_croissant"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

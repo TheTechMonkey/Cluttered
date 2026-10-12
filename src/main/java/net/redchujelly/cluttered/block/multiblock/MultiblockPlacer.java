@@ -40,7 +40,7 @@ public class MultiblockPlacer extends Block {
 
     //Weird stuff happens when it's pushed by a piston.
     public @Nullable PushReaction getPistonPushReaction(BlockState state) {
-        return PushReaction.BLOCK;
+        return PushReaction.IMMOVEABLE;
     }
 
     public MultiblockPlacer(Properties pProperties) {

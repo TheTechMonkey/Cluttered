@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:fluorescent_maple_slab"
+        "recipes": "cluttered:fluorescent_maple_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

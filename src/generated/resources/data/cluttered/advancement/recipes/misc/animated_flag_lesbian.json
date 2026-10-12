@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:animated_flag_lesbian"
+        "recipes": "cluttered:animated_flag_lesbian"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

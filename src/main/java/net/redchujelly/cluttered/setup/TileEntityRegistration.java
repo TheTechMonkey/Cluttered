@@ -6,6 +6,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.BlockEntityTypes;
 import net.redchujelly.cluttered.platform.BusGroup;
 import net.redchujelly.cluttered.platform.DeferredRegister;
 import net.redchujelly.cluttered.platform.FabricRegistries;
@@ -227,7 +228,7 @@ public class TileEntityRegistration {
     }
 
     private static void registerJukeboxBlocks() {
-        FabricBlockEntityType jukeboxType = (FabricBlockEntityType) (Object) BlockEntityType.JUKEBOX;
+        FabricBlockEntityType jukeboxType = (FabricBlockEntityType) (Object) BlockEntityTypes.JUKEBOX;
         jukeboxType.addValidBlock(BlockRegistration.TRADITIONAL_RADIO.get());
         jukeboxType.addValidBlock(BlockRegistration.RECORD_PLAYER_BLUE.get());
         jukeboxType.addValidBlock(BlockRegistration.RECORD_PLAYER_BROWN.get());

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:willow_garden_door"
+        "recipes": "cluttered:willow_garden_door"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

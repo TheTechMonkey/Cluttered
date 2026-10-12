@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:small_glass_jars"
+        "recipes": "cluttered:small_glass_jars"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

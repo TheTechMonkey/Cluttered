@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:tiles_purple"
+        "recipes": "cluttered:tiles_purple"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

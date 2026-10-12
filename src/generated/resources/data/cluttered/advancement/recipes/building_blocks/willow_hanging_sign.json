@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:willow_hanging_sign"
+        "recipes": "cluttered:willow_hanging_sign"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:osson_pendant_sage_green"
+        "recipes": "cluttered:osson_pendant_sage_green"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

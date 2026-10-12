@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:armchair_watermelon"
+        "recipes": "cluttered:armchair_watermelon"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

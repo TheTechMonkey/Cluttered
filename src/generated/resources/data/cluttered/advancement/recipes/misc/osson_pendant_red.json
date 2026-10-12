@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:osson_pendant_red"
+        "recipes": "cluttered:osson_pendant_red"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

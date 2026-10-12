@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:briefcase_blank"
+        "recipes": "cluttered:briefcase_blank"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

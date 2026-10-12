@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:flowering_crabapple_button"
+        "recipes": "cluttered:flowering_crabapple_button"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

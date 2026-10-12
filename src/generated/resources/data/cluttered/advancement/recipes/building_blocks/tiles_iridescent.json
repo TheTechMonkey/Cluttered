@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:tiles_iridescent"
+        "recipes": "cluttered:tiles_iridescent"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

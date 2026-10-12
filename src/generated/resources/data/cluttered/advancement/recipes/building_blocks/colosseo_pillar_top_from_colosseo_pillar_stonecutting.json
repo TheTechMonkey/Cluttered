@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:colosseo_pillar_top_from_colosseo_pillar_stonecutting"
+        "recipes": "cluttered:colosseo_pillar_top_from_colosseo_pillar_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

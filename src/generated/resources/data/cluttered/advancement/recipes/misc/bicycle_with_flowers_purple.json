@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:bicycle_with_flowers_purple"
+        "recipes": "cluttered:bicycle_with_flowers_purple"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

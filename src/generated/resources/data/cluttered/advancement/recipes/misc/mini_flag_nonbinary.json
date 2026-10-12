@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:mini_flag_nonbinary"
+        "recipes": "cluttered:mini_flag_nonbinary"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

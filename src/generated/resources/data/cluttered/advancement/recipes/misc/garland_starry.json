@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:garland_starry"
+        "recipes": "cluttered:garland_starry"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -8,7 +8,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -34,7 +34,7 @@ public class PoplarFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected void createFoliage(WorldGenLevel levelSimulatedReader, FoliageSetter foliageSetter, RandomSource randomSource,
-                                 TreeConfiguration treeConfiguration, int i, FoliageAttachment foliageAttachment, int i1, int i2, int i3) {
+                                 TreeFeature treeConfiguration, int i, FoliageAttachment foliageAttachment, int i1, int i2, int i3) {
 
         BlockPos nextPos = foliageAttachment.pos();
 
@@ -57,7 +57,7 @@ public class PoplarFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    public int foliageHeight(RandomSource randomSource, int i, TreeConfiguration treeConfiguration) {
+    public int foliageHeight(RandomSource randomSource, int i, TreeFeature treeConfiguration) {
         return this.height;
     }
 

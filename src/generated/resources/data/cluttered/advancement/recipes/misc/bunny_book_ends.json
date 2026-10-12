@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:bunny_book_ends"
+        "recipes": "cluttered:bunny_book_ends"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

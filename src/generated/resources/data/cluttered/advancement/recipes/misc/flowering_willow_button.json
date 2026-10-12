@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:flowering_willow_button"
+        "recipes": "cluttered:flowering_willow_button"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

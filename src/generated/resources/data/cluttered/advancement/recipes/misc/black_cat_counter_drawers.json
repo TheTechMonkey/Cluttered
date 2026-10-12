@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:black_cat_counter_drawers"
+        "recipes": "cluttered:black_cat_counter_drawers"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

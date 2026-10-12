@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:fish_wallpaper_tropical"
+        "recipes": "cluttered:fish_wallpaper_tropical"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

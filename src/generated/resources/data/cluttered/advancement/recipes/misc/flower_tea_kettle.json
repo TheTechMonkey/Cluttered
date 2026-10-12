@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:flower_tea_kettle"
+        "recipes": "cluttered:flower_tea_kettle"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

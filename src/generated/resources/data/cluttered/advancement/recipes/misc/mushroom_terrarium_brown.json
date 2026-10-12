@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:mushroom_terrarium_brown"
+        "recipes": "cluttered:mushroom_terrarium_brown"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

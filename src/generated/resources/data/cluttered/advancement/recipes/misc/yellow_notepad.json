@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:yellow_notepad"
+        "recipes": "cluttered:yellow_notepad"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

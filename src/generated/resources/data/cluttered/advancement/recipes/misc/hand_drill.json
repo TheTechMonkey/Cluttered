@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:hand_drill"
+        "recipes": "cluttered:hand_drill"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

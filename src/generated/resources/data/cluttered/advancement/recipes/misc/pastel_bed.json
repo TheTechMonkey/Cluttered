@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:pastel_bed"
+        "recipes": "cluttered:pastel_bed"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

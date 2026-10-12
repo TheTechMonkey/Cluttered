@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:bamboo_bookshelf"
+        "recipes": "cluttered:bamboo_bookshelf"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

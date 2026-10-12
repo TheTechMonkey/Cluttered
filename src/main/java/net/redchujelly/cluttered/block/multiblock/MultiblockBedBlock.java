@@ -9,10 +9,15 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.attribute.BedRule;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.AbstractBedBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -93,14 +98,16 @@ public class MultiblockBedBlock extends MultiblockPlacer{
                 }
             }
 
-            if (!canSetSpawn(pLevel)) {
+            BedRule bedRule = pLevel.environmentAttributes().getValue(EnvironmentAttributes.BED_RULE, pPos);
+            if (bedRule.destroyOnUse()) {
+                bedRule.errorMessage().ifPresent(pPlayer::sendOverlayMessage);
                 pLevel.removeBlock(pPos, false);
                 BlockPos removePos = pPos.relative((pState.getValue(FACING)).getOpposite());
                 if (pLevel.getBlockState(removePos).is(this)) {
                     pLevel.removeBlock(removePos, false);
                 }
 
-                Vec3 center = pPos.getCenter();
+                Vec3 center = Vec3.atCenterOf(pPos);
                 pLevel.explode(null, pLevel.damageSources().badRespawnPointExplosion(center), null, center, 5.0F, true, Level.ExplosionInteraction.BLOCK);
             } else if (pState.getValue(OCCUPIED)) {
                 pPlayer.sendOverlayMessage(Component.translatable("block.minecraft.bed.occupied"));
@@ -109,7 +116,8 @@ public class MultiblockBedBlock extends MultiblockPlacer{
             } else {
                 BlockPos sleepPos = pPos;
                 BlockState sleepState = pState;
-                var sleepResult = pPlayer.startSleepInBed(sleepPos);
+                AbstractBedBlock vanillaBed = (AbstractBedBlock) Blocks.BED.pick(DyeColor.WHITE);
+                var sleepResult = pPlayer.startSleepInBed(vanillaBed, sleepState, bedRule, sleepPos);
                 sleepResult.ifLeft((sleepingProblem) -> {
                     if (sleepingProblem.message() != null) {
                         pPlayer.sendOverlayMessage(sleepingProblem.message());
@@ -122,29 +130,11 @@ public class MultiblockBedBlock extends MultiblockPlacer{
     }
 
     public static boolean canSetSpawn(Level pLevel) {
-        return !pLevel.environmentAttributes().getValue(net.minecraft.world.attribute.EnvironmentAttributes.BED_RULE, net.minecraft.core.BlockPos.ZERO).explodes();
+        return pLevel.environmentAttributes().getValue(EnvironmentAttributes.BED_RULE, BlockPos.ZERO).canSetSpawn(pLevel);
     }
 
     public void fallOn(Level pLevel, BlockState pState, BlockPos pPos, Entity pEntity, double pFallDistance) {
         super.fallOn(pLevel, pState, pPos, pEntity, pFallDistance * 0.5F);
-    }
-
-    public void updateEntityMovementAfterFallOn(BlockGetter pLevel, Entity pEntity) {
-        if (pEntity.isSuppressingBounce()) {
-            super.updateEntityMovementAfterFallOn(pLevel, pEntity);
-        } else {
-            this.bounceUp(pEntity);
-        }
-
-    }
-
-    private void bounceUp(Entity pEntity) {
-        Vec3 $$1 = pEntity.getDeltaMovement();
-        if ($$1.y < (double)0.0F) {
-            double $$2 = pEntity instanceof LivingEntity ? (double)1.0F : 0.8;
-            pEntity.setDeltaMovement($$1.x, -$$1.y * (double)0.66F * $$2, $$1.z);
-        }
-
     }
 
     @Override

@@ -1,6 +1,7 @@
 package net.redchujelly.cluttered.mixin;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,7 +24,7 @@ public abstract class ServerPlayerMixin {
         Block block = state.getBlock();
         if (block instanceof MultiblockBedBlock) {
             // Let vanilla run its BedBlock respawn branch while keeping the real Cluttered state for facing/position.
-            return Blocks.WHITE_BED;
+            return Blocks.BED.pick(DyeColor.WHITE);
         }
 
         return block;

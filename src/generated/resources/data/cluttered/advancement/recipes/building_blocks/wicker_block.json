@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:wicker_block"
+        "recipes": "cluttered:wicker_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

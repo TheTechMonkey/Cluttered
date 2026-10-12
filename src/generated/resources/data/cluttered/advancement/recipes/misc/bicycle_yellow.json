@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:bicycle_yellow"
+        "recipes": "cluttered:bicycle_yellow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

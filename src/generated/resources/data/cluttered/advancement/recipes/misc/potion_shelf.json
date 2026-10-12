@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:potion_shelf"
+        "recipes": "cluttered:potion_shelf"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

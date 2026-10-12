@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:blue_mushroom_wardrobe"
+        "recipes": "cluttered:blue_mushroom_wardrobe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:hannish_tile"
+        "recipes": "cluttered:hannish_tile"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

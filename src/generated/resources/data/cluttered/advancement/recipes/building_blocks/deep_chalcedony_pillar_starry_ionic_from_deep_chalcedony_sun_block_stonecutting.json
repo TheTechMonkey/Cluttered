@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:deep_chalcedony_pillar_starry_ionic_from_deep_chalcedony_sun_block_stonecutting"
+        "recipes": "cluttered:deep_chalcedony_pillar_starry_ionic_from_deep_chalcedony_sun_block_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

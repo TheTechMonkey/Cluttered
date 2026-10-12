@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:hoppin_park_lantern"
+        "recipes": "cluttered:hoppin_park_lantern"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

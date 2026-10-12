@@ -1,17 +1,23 @@
 package net.redchujelly.cluttered.setup;
 
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
-import net.fabricmc.fabric.api.registry.FuelValueEvents;
-import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
+import net.fabricmc.fabric.api.item.v1.BlockTransformerHelper;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.component.CookingFuel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ResolvableFloat;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ResolvableInt;
 import net.redchujelly.cluttered.platform.BusGroup;
 import net.redchujelly.cluttered.platform.DeferredRegister;
 import net.redchujelly.cluttered.platform.FabricRegistries;
@@ -29,7 +35,6 @@ import net.redchujelly.cluttered.block.multiblock.storage.ChinaCabinetBlock;
 import net.redchujelly.cluttered.block.multiblock.storage.*;
 import net.redchujelly.cluttered.util.ClutteredWoodTypes;
 import net.redchujelly.cluttered.worldgen.tree.*;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +42,9 @@ import java.util.function.Supplier;
 
 public class BlockRegistration {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(FabricRegistries.BLOCKS, Cluttered.MODID);
-    private static final List<FuelEntry> FUEL_ITEMS = new ArrayList<>();
-
-    private record FuelEntry(RegistryObject<? extends Item> item, int burnTime) {
-    }
+    private static final ResourceKey<ContextIntProvider> COMPOSTABLE_VERY_LOW = ResourceKey.create(
+            Registries.CONTEXT_INT_PROVIDER,
+            Identifier.fromNamespaceAndPath(Cluttered.MODID, "compostable/very_low"));
 
 
     //WILLOW WOODSET
@@ -462,7 +466,7 @@ public class BlockRegistration {
     public static final RegistryObject<Block> BLUE_MUSHROOM_PLANKS = registerFuelBlock("blue_mushroom_planks",
             () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("blue_mushroom_planks")).mapColor(DyeColor.BLUE).sound(SoundType.NETHER_WOOD)), 300);
     public static final RegistryObject<Block> BLUE_MUSHROOM_CAP = registerBlock("blue_mushroom_cap",
-            () -> new BouncyMushroomBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_MUSHROOM_BLOCK).setId(BLOCKS.key("blue_mushroom_cap")).mapColor(DyeColor.BLUE).sound(SoundType.SHROOMLIGHT)));
+            () -> new BouncyMushroomBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_MUSHROOM_BLOCK).setId(BLOCKS.key("blue_mushroom_cap")).mapColor(DyeColor.BLUE).sound(SoundType.SHROOMLIGHT).bounceRestitution(1.0F)));
     public static final RegistryObject<Block> BLUE_MUSHROOM_SAPLING = registerBlock("blue_roundhead",
             () -> new MushroomSaplingBlock(BlueMushroomTreeGrower.INSTANCE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING).setId(BLOCKS.key("blue_roundhead")).mapColor(DyeColor.BLUE)));
     public static final RegistryObject<Block> BLUE_MUSHROOM_SLAB = registerFuelBlock("blue_mushroom_slab",
@@ -509,7 +513,7 @@ public class BlockRegistration {
     public static final RegistryObject<Block> RED_MUSHROOM_PLANKS = registerFuelBlock("red_mushroom_planks",
             () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("red_mushroom_planks")).mapColor(DyeColor.RED).sound(SoundType.NETHER_WOOD)), 300);
     public static final RegistryObject<Block> RED_MUSHROOM_CAP = registerFuelBlock("red_mushroom_cap",
-            () -> new BouncyMushroomBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("red_mushroom_cap")).mapColor(DyeColor.RED).sound(SoundType.SHROOMLIGHT)), 300);
+            () -> new BouncyMushroomBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("red_mushroom_cap")).mapColor(DyeColor.RED).sound(SoundType.SHROOMLIGHT).bounceRestitution(1.0F)), 300);
     public static final RegistryObject<Block> RED_MUSHROOM_SAPLING = registerBlock("fly_agaric",
             () -> new MushroomSaplingBlock(RedMushroomTreeGrower.INSTANCE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING).setId(BLOCKS.key("fly_agaric")).mapColor(DyeColor.RED)));
     public static final RegistryObject<Block> RED_MUSHROOM_SLAB = registerFuelBlock("red_mushroom_slab",
@@ -794,334 +798,334 @@ public class BlockRegistration {
 
     //WALLPAPERS
     public static final RegistryObject<Block> STARRY_WALLPAPER = registerBlock("starry_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("starry_wallpaper")).sound(SoundType.SPORE_BLOSSOM).lightLevel(p -> 4).noOcclusion()));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("starry_wallpaper")).sound(SoundType.SPORE_BLOSSOM).lightLevel(p -> 4).noOcclusion()));
     public static final RegistryObject<Block> STARRY_WALLPAPER_TOP = registerBlock("starry_wallpaper_upper_trim",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("starry_wallpaper_upper_trim")).sound(SoundType.SPORE_BLOSSOM).lightLevel(p -> 4).noOcclusion()));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("starry_wallpaper_upper_trim")).sound(SoundType.SPORE_BLOSSOM).lightLevel(p -> 4).noOcclusion()));
     public static final RegistryObject<Block> STARRY_WALLPAPER_BOTTOM = registerBlock("starry_wallpaper_lower_trim",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("starry_wallpaper_lower_trim")).sound(SoundType.SPORE_BLOSSOM).lightLevel(p -> 4).noOcclusion()));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("starry_wallpaper_lower_trim")).sound(SoundType.SPORE_BLOSSOM).lightLevel(p -> 4).noOcclusion()));
     public static final RegistryObject<Block> DARK_STARRY_WALLPAPER = registerBlock("dark_starry_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("dark_starry_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("dark_starry_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DARK_STARRY_WALLPAPER_TOP = registerBlock("dark_starry_wallpaper_upper_trim",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("dark_starry_wallpaper_upper_trim")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("dark_starry_wallpaper_upper_trim")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DARK_STARRY_WALLPAPER_BOTTOM = registerBlock("dark_starry_wallpaper_lower_trim",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("dark_starry_wallpaper_lower_trim")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("dark_starry_wallpaper_lower_trim")).sound(SoundType.SPORE_BLOSSOM)));
 
     public static final RegistryObject<Block> RETRO_RAINBOW_WALLPAPER = registerBlock("retro_rainbow_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ORANGE_WOOL).setId(BLOCKS.key("retro_rainbow_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.ORANGE)).setId(BLOCKS.key("retro_rainbow_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> APPLE_WALLPAPER = registerBlock("apple_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GREEN_WOOL).setId(BLOCKS.key("apple_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.GREEN)).setId(BLOCKS.key("apple_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> BLUE_ROSE_STRIPED_WALLPAPER = registerBlock("blue_rose_striped_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("blue_rose_striped_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("blue_rose_striped_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> CHECKERED_FRUIT_WALLPAPER = registerBlock("checkered_fruit_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GREEN_WOOL).setId(BLOCKS.key("checkered_fruit_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.GREEN)).setId(BLOCKS.key("checkered_fruit_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> CHECKERED_GREEN_WALLPAPER = registerBlock("checkered_green_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GREEN_WOOL).setId(BLOCKS.key("checkered_green_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.GREEN)).setId(BLOCKS.key("checkered_green_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> CHECKERED_GREEN_STRAWBERRY_WALLPAPER = registerBlock("checkered_green_strawberry_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GREEN_WOOL).setId(BLOCKS.key("checkered_green_strawberry_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.GREEN)).setId(BLOCKS.key("checkered_green_strawberry_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> CHECKERED_PINK_WALLPAPER = registerBlock("checkered_pink_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("checkered_pink_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("checkered_pink_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> CHECKERED_PINK_STRAWBERRY_WALLPAPER = registerBlock("checkered_pink_strawberry_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("checkered_pink_strawberry_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("checkered_pink_strawberry_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> CHIC_WALLPAPER = registerBlock("chic_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("chic_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("chic_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> CHIC_WALLPAPER_UPPER_TRIM = registerBlock("chic_wallpaper_upper_trim",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("chic_wallpaper_upper_trim")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("chic_wallpaper_upper_trim")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> CHIC_WALLPAPER_LOWER_TRIM = registerBlock("chic_wallpaper_lower_trim",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("chic_wallpaper_lower_trim")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("chic_wallpaper_lower_trim")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> CONFECTIONARY_WALLPAPER = registerBlock("confectionary_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("confectionary_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("confectionary_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> FLORAL_BERRY_WALLPAPER = registerBlock("floral_berry_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("floral_berry_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("floral_berry_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> FLORAL_BORDER_WALLPAPER = registerBlock("floral_border_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GREEN_WOOL).setId(BLOCKS.key("floral_border_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.GREEN)).setId(BLOCKS.key("floral_border_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> GHOST_WALLPAPER = registerBlock("ghost_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("ghost_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("ghost_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> GHOST_WALLPAPER_TRIM = registerBlock("ghost_wallpaper_trim",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("ghost_wallpaper_trim")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("ghost_wallpaper_trim")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> GHOST_WALLPAPER_BOTTOM = registerBlock("ghost_wallpaper_bottom",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("ghost_wallpaper_bottom")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("ghost_wallpaper_bottom")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> GHOST_WALLPAPER_TOP = registerBlock("ghost_wallpaper_top",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("ghost_wallpaper_top")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("ghost_wallpaper_top")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> GHOST_WALLPAPER_WAINSCOTING = registerBlock("ghost_wallpaper_wainscoting",
             () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("ghost_wallpaper_wainscoting")).mapColor(DyeColor.PURPLE)));
     public static final RegistryObject<Block> HALLOWEEN_WALLPAPER = registerBlock("halloween_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ORANGE_WOOL).setId(BLOCKS.key("halloween_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.ORANGE)).setId(BLOCKS.key("halloween_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> HALLOWEEN_WALLPAPER_BOTTOM = registerBlock("halloween_wallpaper_bottom",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ORANGE_WOOL).setId(BLOCKS.key("halloween_wallpaper_bottom")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.ORANGE)).setId(BLOCKS.key("halloween_wallpaper_bottom")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> HALLOWEEN_WALLPAPER_TOP = registerBlock("halloween_wallpaper_top",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ORANGE_WOOL).setId(BLOCKS.key("halloween_wallpaper_top")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.ORANGE)).setId(BLOCKS.key("halloween_wallpaper_top")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> HALLOWEEN_WAINSCOTING = registerBlock("halloween_wainscoting",
             () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("halloween_wainscoting")).mapColor(DyeColor.PURPLE)));
     public static final RegistryObject<Block> RIALTO_GOLD_WALLPAPER = registerBlock("rialto_gold_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("rialto_gold_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("rialto_gold_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> RIALTO_GOLD_WALLPAPER_TOP = registerBlock("rialto_wallpaper_upper_trim",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("rialto_wallpaper_upper_trim")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("rialto_wallpaper_upper_trim")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> RIALTO_GOLD_WALLPAPER_BOTTOM = registerBlock("rialto_wallpaper_lower_trim",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("rialto_wallpaper_lower_trim")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("rialto_wallpaper_lower_trim")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> MARIGOLD_WALLPAPER = registerBlock("marigold_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("marigold_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("marigold_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> MARIGOLD_WALLPAPER_BOTTOM = registerBlock("marigold_wallpaper_bottom",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("marigold_wallpaper_bottom")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("marigold_wallpaper_bottom")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> MARIGOLD_WALLPAPER_TOP = registerBlock("marigold_wallpaper_top",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("marigold_wallpaper_top")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("marigold_wallpaper_top")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> MINT_WALLPAPER = registerBlock("mint_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_WOOL).setId(BLOCKS.key("mint_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIME)).setId(BLOCKS.key("mint_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> PINK_STRIPE_WALLPAPER = registerBlock("pink_striped_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("pink_striped_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("pink_striped_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> PINK_STRIPE_WALLPAPER_LOWER_TRIM = registerBlock("pink_striped_wallpaper_lower_trim",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("pink_striped_wallpaper_lower_trim")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("pink_striped_wallpaper_lower_trim")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> PINK_STRIPE_WALLPAPER_UPPER_TRIM = registerBlock("pink_striped_wallpaper_upper_trim",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("pink_striped_wallpaper_upper_trim")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("pink_striped_wallpaper_upper_trim")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> FISH_WALLPAPER = registerBlock("fish_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("fish_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("fish_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> TROPICAL_FISH_WALLPAPER = registerBlock("fish_wallpaper_tropical",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIGHT_BLUE_WOOL).setId(BLOCKS.key("fish_wallpaper_tropical")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIGHT_BLUE)).setId(BLOCKS.key("fish_wallpaper_tropical")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> TARTAN_YELLOW_WALLPAPER = registerBlock("tartan_yellow_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("tartan_yellow_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("tartan_yellow_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
 
 
     //DIAMOND WALLPAPER
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_APPLE = registerBlock("diamond_wallpaper_apple",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_apple")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_apple")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_APPLE_BOTTOM_BROWN = registerBlock("diamond_wallpaper_apple_bottom_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_apple_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_apple_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_APPLE_TOP_BROWN = registerBlock("diamond_wallpaper_apple_top_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_apple_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_apple_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_APPLE_BOTTOM_WHITE = registerBlock("diamond_wallpaper_apple_bottom_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_apple_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_apple_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_APPLE_TOP_WHITE = registerBlock("diamond_wallpaper_apple_top_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_apple_top_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_apple_top_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_APPLE_BOTTOM_COLOR = registerBlock("diamond_wallpaper_apple_bottom_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_apple_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_apple_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_APPLE_TOP_COLOR = registerBlock("diamond_wallpaper_apple_top_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_apple_top_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_apple_top_color")).sound(SoundType.SPORE_BLOSSOM)));
 
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BLACKBERRY = registerBlock("diamond_wallpaper_blackberry",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_blackberry")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_blackberry")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BLACKBERRY_BOTTOM_BROWN = registerBlock("diamond_wallpaper_blackberry_bottom_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_blackberry_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_blackberry_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BLACKBERRY_TOP_BROWN = registerBlock("diamond_wallpaper_blackberry_top_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_blackberry_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_blackberry_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BLACKBERRY_BOTTOM_WHITE = registerBlock("diamond_wallpaper_blackberry_bottom_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_blackberry_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_blackberry_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BLACKBERRY_TOP_WHITE = registerBlock("diamond_wallpaper_blackberry_top_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_blackberry_top_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_blackberry_top_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BLACKBERRY_BOTTOM_COLOR = registerBlock("diamond_wallpaper_blackberry_bottom_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_blackberry_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_blackberry_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BLACKBERRY_TOP_COLOR = registerBlock("diamond_wallpaper_blackberry_top_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_blackberry_top_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_blackberry_top_color")).sound(SoundType.SPORE_BLOSSOM)));
 
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BLUEBERRY = registerBlock("diamond_wallpaper_blueberry",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("diamond_wallpaper_blueberry")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("diamond_wallpaper_blueberry")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BLUEBERRY_BOTTOM_BROWN = registerBlock("diamond_wallpaper_blueberry_bottom_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("diamond_wallpaper_blueberry_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("diamond_wallpaper_blueberry_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BLUEBERRY_TOP_BROWN = registerBlock("diamond_wallpaper_blueberry_top_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("diamond_wallpaper_blueberry_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("diamond_wallpaper_blueberry_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BLUEBERRY_BOTTOM_WHITE = registerBlock("diamond_wallpaper_blueberry_bottom_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("diamond_wallpaper_blueberry_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("diamond_wallpaper_blueberry_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BLUEBERRY_TOP_WHITE = registerBlock("diamond_wallpaper_blueberry_top_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("diamond_wallpaper_blueberry_top_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("diamond_wallpaper_blueberry_top_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BLUEBERRY_BOTTOM_COLOR = registerBlock("diamond_wallpaper_blueberry_bottom_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("diamond_wallpaper_blueberry_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("diamond_wallpaper_blueberry_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BLUEBERRY_TOP_COLOR = registerBlock("diamond_wallpaper_blueberry_top_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("diamond_wallpaper_blueberry_top_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("diamond_wallpaper_blueberry_top_color")).sound(SoundType.SPORE_BLOSSOM)));
 
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BONES = registerBlock("diamond_wallpaper_bones",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLACK_WOOL).setId(BLOCKS.key("diamond_wallpaper_bones")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLACK)).setId(BLOCKS.key("diamond_wallpaper_bones")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BONES_BOTTOM_BROWN = registerBlock("diamond_wallpaper_bones_bottom_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLACK_WOOL).setId(BLOCKS.key("diamond_wallpaper_bones_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLACK)).setId(BLOCKS.key("diamond_wallpaper_bones_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BONES_TOP_BROWN = registerBlock("diamond_wallpaper_bones_top_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLACK_WOOL).setId(BLOCKS.key("diamond_wallpaper_bones_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLACK)).setId(BLOCKS.key("diamond_wallpaper_bones_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BONES_BOTTOM_WHITE = registerBlock("diamond_wallpaper_bones_bottom_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLACK_WOOL).setId(BLOCKS.key("diamond_wallpaper_bones_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLACK)).setId(BLOCKS.key("diamond_wallpaper_bones_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BONES_TOP_WHITE = registerBlock("diamond_wallpaper_bones_top_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLACK_WOOL).setId(BLOCKS.key("diamond_wallpaper_bones_top_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLACK)).setId(BLOCKS.key("diamond_wallpaper_bones_top_white")).sound(SoundType.SPORE_BLOSSOM)));
 
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BOUQUET = registerBlock("diamond_wallpaper_bouquet",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MAGENTA_WOOL).setId(BLOCKS.key("diamond_wallpaper_bouquet")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.MAGENTA)).setId(BLOCKS.key("diamond_wallpaper_bouquet")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BOUQUET_BOTTOM_BROWN = registerBlock("diamond_wallpaper_bouquet_bottom_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MAGENTA_WOOL).setId(BLOCKS.key("diamond_wallpaper_bouquet_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.MAGENTA)).setId(BLOCKS.key("diamond_wallpaper_bouquet_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BOUQUET_TOP_BROWN = registerBlock("diamond_wallpaper_bouquet_top_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MAGENTA_WOOL).setId(BLOCKS.key("diamond_wallpaper_bouquet_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.MAGENTA)).setId(BLOCKS.key("diamond_wallpaper_bouquet_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BOUQUET_BOTTOM_WHITE = registerBlock("diamond_wallpaper_bouquet_bottom_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MAGENTA_WOOL).setId(BLOCKS.key("diamond_wallpaper_bouquet_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.MAGENTA)).setId(BLOCKS.key("diamond_wallpaper_bouquet_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BOUQUET_TOP_WHITE = registerBlock("diamond_wallpaper_bouquet_top_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MAGENTA_WOOL).setId(BLOCKS.key("diamond_wallpaper_bouquet_top_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.MAGENTA)).setId(BLOCKS.key("diamond_wallpaper_bouquet_top_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BOUQUET_BOTTOM_COLOR = registerBlock("diamond_wallpaper_bouquet_bottom_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MAGENTA_WOOL).setId(BLOCKS.key("diamond_wallpaper_bouquet_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.MAGENTA)).setId(BLOCKS.key("diamond_wallpaper_bouquet_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BOUQUET_TOP_COLOR = registerBlock("diamond_wallpaper_bouquet_top_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MAGENTA_WOOL).setId(BLOCKS.key("diamond_wallpaper_bouquet_top_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.MAGENTA)).setId(BLOCKS.key("diamond_wallpaper_bouquet_top_color")).sound(SoundType.SPORE_BLOSSOM)));
 
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BROWN_MUSHROOM = registerBlock("diamond_wallpaper_brown_mushroom",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("diamond_wallpaper_brown_mushroom")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("diamond_wallpaper_brown_mushroom")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BROWN_MUSHROOM_BOTTOM_BROWN = registerBlock("diamond_wallpaper_brown_mushroom_bottom_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("diamond_wallpaper_brown_mushroom_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("diamond_wallpaper_brown_mushroom_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BROWN_MUSHROOM_TOP_BROWN = registerBlock("diamond_wallpaper_brown_mushroom_top_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("diamond_wallpaper_brown_mushroom_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("diamond_wallpaper_brown_mushroom_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BROWN_MUSHROOM_BOTTOM_WHITE = registerBlock("diamond_wallpaper_brown_mushroom_bottom_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("diamond_wallpaper_brown_mushroom_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("diamond_wallpaper_brown_mushroom_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BROWN_MUSHROOM_TOP_WHITE = registerBlock("diamond_wallpaper_brown_mushroom_top_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("diamond_wallpaper_brown_mushroom_top_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("diamond_wallpaper_brown_mushroom_top_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BROWN_MUSHROOM_BOTTOM_COLOR = registerBlock("diamond_wallpaper_brown_mushroom_bottom_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("diamond_wallpaper_brown_mushroom_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("diamond_wallpaper_brown_mushroom_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_BROWN_MUSHROOM_TOP_COLOR = registerBlock("diamond_wallpaper_brown_mushroom_top_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("diamond_wallpaper_brown_mushroom_top_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("diamond_wallpaper_brown_mushroom_top_color")).sound(SoundType.SPORE_BLOSSOM)));
 
 
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_GREEN_GRAPES = registerBlock("diamond_wallpaper_green_grapes",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_WOOL).setId(BLOCKS.key("diamond_wallpaper_green_grapes")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIME)).setId(BLOCKS.key("diamond_wallpaper_green_grapes")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_GREEN_GRAPES_BOTTOM_BROWN = registerBlock("diamond_wallpaper_green_grapes_bottom_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_WOOL).setId(BLOCKS.key("diamond_wallpaper_green_grapes_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIME)).setId(BLOCKS.key("diamond_wallpaper_green_grapes_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_GREEN_GRAPES_TOP_BROWN = registerBlock("diamond_wallpaper_green_grapes_top_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_WOOL).setId(BLOCKS.key("diamond_wallpaper_green_grapes_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIME)).setId(BLOCKS.key("diamond_wallpaper_green_grapes_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_GREEN_GRAPES_BOTTOM_WHITE = registerBlock("diamond_wallpaper_green_grapes_bottom_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_WOOL).setId(BLOCKS.key("diamond_wallpaper_green_grapes_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIME)).setId(BLOCKS.key("diamond_wallpaper_green_grapes_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_GREEN_GRAPES_TOP_WHITE = registerBlock("diamond_wallpaper_green_grapes_top_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_WOOL).setId(BLOCKS.key("diamond_wallpaper_green_grapes_top_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIME)).setId(BLOCKS.key("diamond_wallpaper_green_grapes_top_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_GREEN_GRAPES_BOTTOM_COLOR = registerBlock("diamond_wallpaper_green_grapes_bottom_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_WOOL).setId(BLOCKS.key("diamond_wallpaper_green_grapes_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIME)).setId(BLOCKS.key("diamond_wallpaper_green_grapes_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_GREEN_GRAPES_TOP_COLOR = registerBlock("diamond_wallpaper_green_grapes_top_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_WOOL).setId(BLOCKS.key("diamond_wallpaper_green_grapes_top_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIME)).setId(BLOCKS.key("diamond_wallpaper_green_grapes_top_color")).sound(SoundType.SPORE_BLOSSOM)));
 
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_LEMON = registerBlock("diamond_wallpaper_lemon",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("diamond_wallpaper_lemon")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("diamond_wallpaper_lemon")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_LEMON_BOTTOM_BROWN = registerBlock("diamond_wallpaper_lemon_bottom_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("diamond_wallpaper_lemon_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("diamond_wallpaper_lemon_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_LEMON_TOP_BROWN = registerBlock("diamond_wallpaper_lemon_top_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("diamond_wallpaper_lemon_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("diamond_wallpaper_lemon_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_LEMON_BOTTOM_WHITE = registerBlock("diamond_wallpaper_lemon_bottom_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("diamond_wallpaper_lemon_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("diamond_wallpaper_lemon_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_LEMON_TOP_WHITE = registerBlock("diamond_wallpaper_lemon_top_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("diamond_wallpaper_lemon_top_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("diamond_wallpaper_lemon_top_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_LEMON_BOTTOM_COLOR = registerBlock("diamond_wallpaper_lemon_bottom_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("diamond_wallpaper_lemon_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("diamond_wallpaper_lemon_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_LEMON_TOP_COLOR = registerBlock("diamond_wallpaper_lemon_top_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("diamond_wallpaper_lemon_top_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("diamond_wallpaper_lemon_top_color")).sound(SoundType.SPORE_BLOSSOM)));
 
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_ORANGE = registerBlock("diamond_wallpaper_orange",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ORANGE_WOOL).setId(BLOCKS.key("diamond_wallpaper_orange")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.ORANGE)).setId(BLOCKS.key("diamond_wallpaper_orange")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_ORANGE_BOTTOM_BROWN = registerBlock("diamond_wallpaper_orange_bottom_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ORANGE_WOOL).setId(BLOCKS.key("diamond_wallpaper_orange_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.ORANGE)).setId(BLOCKS.key("diamond_wallpaper_orange_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_ORANGE_TOP_BROWN = registerBlock("diamond_wallpaper_orange_top_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ORANGE_WOOL).setId(BLOCKS.key("diamond_wallpaper_orange_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.ORANGE)).setId(BLOCKS.key("diamond_wallpaper_orange_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_ORANGE_BOTTOM_WHITE = registerBlock("diamond_wallpaper_orange_bottom_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ORANGE_WOOL).setId(BLOCKS.key("diamond_wallpaper_orange_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.ORANGE)).setId(BLOCKS.key("diamond_wallpaper_orange_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_ORANGE_TOP_WHITE = registerBlock("diamond_wallpaper_orange_top_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ORANGE_WOOL).setId(BLOCKS.key("diamond_wallpaper_orange_top_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.ORANGE)).setId(BLOCKS.key("diamond_wallpaper_orange_top_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_ORANGE_BOTTOM_COLOR = registerBlock("diamond_wallpaper_orange_bottom_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ORANGE_WOOL).setId(BLOCKS.key("diamond_wallpaper_orange_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.ORANGE)).setId(BLOCKS.key("diamond_wallpaper_orange_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_ORANGE_TOP_COLOR = registerBlock("diamond_wallpaper_orange_top_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ORANGE_WOOL).setId(BLOCKS.key("diamond_wallpaper_orange_top_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.ORANGE)).setId(BLOCKS.key("diamond_wallpaper_orange_top_color")).sound(SoundType.SPORE_BLOSSOM)));
 
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PEAR = registerBlock("diamond_wallpaper_pear",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_WOOL).setId(BLOCKS.key("diamond_wallpaper_pear")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIME)).setId(BLOCKS.key("diamond_wallpaper_pear")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PEAR_BOTTOM_BROWN = registerBlock("diamond_wallpaper_pear_bottom_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_WOOL).setId(BLOCKS.key("diamond_wallpaper_pear_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIME)).setId(BLOCKS.key("diamond_wallpaper_pear_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PEAR_TOP_BROWN = registerBlock("diamond_wallpaper_pear_top_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_WOOL).setId(BLOCKS.key("diamond_wallpaper_pear_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIME)).setId(BLOCKS.key("diamond_wallpaper_pear_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PEAR_BOTTOM_WHITE = registerBlock("diamond_wallpaper_pear_bottom_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_WOOL).setId(BLOCKS.key("diamond_wallpaper_pear_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIME)).setId(BLOCKS.key("diamond_wallpaper_pear_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PEAR_TOP_WHITE = registerBlock("diamond_wallpaper_pear_top_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_WOOL).setId(BLOCKS.key("diamond_wallpaper_pear_top_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIME)).setId(BLOCKS.key("diamond_wallpaper_pear_top_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PEAR_BOTTOM_COLOR = registerBlock("diamond_wallpaper_pear_bottom_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_WOOL).setId(BLOCKS.key("diamond_wallpaper_pear_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIME)).setId(BLOCKS.key("diamond_wallpaper_pear_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PEAR_TOP_COLOR = registerBlock("diamond_wallpaper_pear_top_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_WOOL).setId(BLOCKS.key("diamond_wallpaper_pear_top_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIME)).setId(BLOCKS.key("diamond_wallpaper_pear_top_color")).sound(SoundType.SPORE_BLOSSOM)));
 
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PLUM = registerBlock("diamond_wallpaper_plum",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_plum")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_plum")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PLUM_BOTTOM_BROWN = registerBlock("diamond_wallpaper_plum_bottom_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_plum_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_plum_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PLUM_TOP_BROWN = registerBlock("diamond_wallpaper_plum_top_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_plum_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_plum_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PLUM_BOTTOM_WHITE = registerBlock("diamond_wallpaper_plum_bottom_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_plum_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_plum_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PLUM_TOP_WHITE = registerBlock("diamond_wallpaper_plum_top_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_plum_top_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_plum_top_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PLUM_BOTTOM_COLOR = registerBlock("diamond_wallpaper_plum_bottom_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_plum_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_plum_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PLUM_TOP_COLOR = registerBlock("diamond_wallpaper_plum_top_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_plum_top_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_plum_top_color")).sound(SoundType.SPORE_BLOSSOM)));
 
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PURPLE_GRAPES = registerBlock("diamond_wallpaper_purple_grapes",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_purple_grapes")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_purple_grapes")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PURPLE_GRAPES_BOTTOM_BROWN = registerBlock("diamond_wallpaper_purple_grapes_bottom_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_purple_grapes_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_purple_grapes_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PURPLE_GRAPES_TOP_BROWN = registerBlock("diamond_wallpaper_purple_grapes_top_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_purple_grapes_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_purple_grapes_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PURPLE_GRAPES_BOTTOM_WHITE = registerBlock("diamond_wallpaper_purple_grapes_bottom_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_purple_grapes_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_purple_grapes_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PURPLE_GRAPES_TOP_WHITE = registerBlock("diamond_wallpaper_purple_grapes_top_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_purple_grapes_top_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_purple_grapes_top_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PURPLE_GRAPES_BOTTOM_COLOR = registerBlock("diamond_wallpaper_purple_grapes_bottom_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_purple_grapes_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_purple_grapes_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_PURPLE_GRAPES_TOP_COLOR = registerBlock("diamond_wallpaper_purple_grapes_top_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("diamond_wallpaper_purple_grapes_top_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("diamond_wallpaper_purple_grapes_top_color")).sound(SoundType.SPORE_BLOSSOM)));
 
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_STRAWBERRY = registerBlock("diamond_wallpaper_strawberry",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_strawberry")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_strawberry")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_STRAWBERRY_BOTTOM_BROWN = registerBlock("diamond_wallpaper_strawberry_bottom_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_strawberry_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_strawberry_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_STRAWBERRY_TOP_BROWN = registerBlock("diamond_wallpaper_strawberry_top_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_strawberry_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_strawberry_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_STRAWBERRY_BOTTOM_WHITE = registerBlock("diamond_wallpaper_strawberry_bottom_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_strawberry_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_strawberry_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_STRAWBERRY_TOP_WHITE = registerBlock("diamond_wallpaper_strawberry_top_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_strawberry_top_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_strawberry_top_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_STRAWBERRY_BOTTOM_COLOR = registerBlock("diamond_wallpaper_strawberry_bottom_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_strawberry_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_strawberry_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_STRAWBERRY_TOP_COLOR = registerBlock("diamond_wallpaper_strawberry_top_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_strawberry_top_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_strawberry_top_color")).sound(SoundType.SPORE_BLOSSOM)));
 
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_RED_MUSHROOM = registerBlock("diamond_wallpaper_red_mushroom",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_red_mushroom")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_red_mushroom")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_RED_MUSHROOM_BOTTOM_BROWN = registerBlock("diamond_wallpaper_red_mushroom_bottom_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_red_mushroom_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_red_mushroom_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_RED_MUSHROOM_TOP_BROWN = registerBlock("diamond_wallpaper_red_mushroom_top_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_red_mushroom_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_red_mushroom_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_RED_MUSHROOM_BOTTOM_WHITE = registerBlock("diamond_wallpaper_red_mushroom_bottom_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_red_mushroom_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_red_mushroom_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_RED_MUSHROOM_TOP_WHITE = registerBlock("diamond_wallpaper_red_mushroom_top_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_red_mushroom_top_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_red_mushroom_top_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_RED_MUSHROOM_BOTTOM_COLOR = registerBlock("diamond_wallpaper_red_mushroom_bottom_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_red_mushroom_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_red_mushroom_bottom_color")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_RED_MUSHROOM_TOP_COLOR = registerBlock("diamond_wallpaper_red_mushroom_top_color",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("diamond_wallpaper_red_mushroom_top_color")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("diamond_wallpaper_red_mushroom_top_color")).sound(SoundType.SPORE_BLOSSOM)));
 
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_ANCHOR = registerBlock("diamond_wallpaper_anchor",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("diamond_wallpaper_anchor")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("diamond_wallpaper_anchor")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_ANCHOR_BOTTOM_BROWN = registerBlock("diamond_wallpaper_anchor_bottom_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("diamond_wallpaper_anchor_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("diamond_wallpaper_anchor_bottom_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_ANCHOR_TOP_BROWN = registerBlock("diamond_wallpaper_anchor_top_brown",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("diamond_wallpaper_anchor_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("diamond_wallpaper_anchor_top_brown")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_ANCHOR_BOTTOM_WHITE = registerBlock("diamond_wallpaper_anchor_bottom_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("diamond_wallpaper_anchor_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("diamond_wallpaper_anchor_bottom_white")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> DIAMOND_WALLPAPER_ANCHOR_TOP_WHITE = registerBlock("diamond_wallpaper_anchor_top_white",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("diamond_wallpaper_anchor_top_white")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("diamond_wallpaper_anchor_top_white")).sound(SoundType.SPORE_BLOSSOM)));
 
     //TODO ? WALLPAPER TRIMS
     public static final RegistryObject<Block> BLUE_ROSE_STRIPED_WALLPAPER_BOTTOM = registerBlock("blue_rose_striped_wallpaper_bottom",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("blue_rose_striped_wallpaper_bottom")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("blue_rose_striped_wallpaper_bottom")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> BLUE_ROSE_STRIPED_WALLPAPER_TOP = registerBlock("blue_rose_striped_wallpaper_top",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("blue_rose_striped_wallpaper_top")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("blue_rose_striped_wallpaper_top")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> CONFECTIONARY_WALLPAPER_BOTTOM = registerBlock("confectionary_wallpaper_bottom",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("confectionary_wallpaper_bottom")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("confectionary_wallpaper_bottom")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> CONFECTIONARY_WALLPAPER_TOP = registerBlock("confectionary_wallpaper_top",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("confectionary_wallpaper_top")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("confectionary_wallpaper_top")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> MINT_WALLPAPER_BOTTOM = registerBlock("mint_wallpaper_bottom",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GREEN_WOOL).setId(BLOCKS.key("mint_wallpaper_bottom")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.GREEN)).setId(BLOCKS.key("mint_wallpaper_bottom")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> MINT_WALLPAPER_TOP = registerBlock("mint_wallpaper_top",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GREEN_WOOL).setId(BLOCKS.key("mint_wallpaper_top")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.GREEN)).setId(BLOCKS.key("mint_wallpaper_top")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> STRIPED_FLORAL_WALLPAPER = registerBlock("striped_floral_wallpaper",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("striped_floral_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("striped_floral_wallpaper")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> STRIPED_FLORAL_WALLPAPER_BOTTOM = registerBlock("striped_floral_wallpaper_bottom",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("striped_floral_wallpaper_bottom")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("striped_floral_wallpaper_bottom")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> STRIPED_FLORAL_WALLPAPER_TOP = registerBlock("striped_floral_wallpaper_top",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("striped_floral_wallpaper_top")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("striped_floral_wallpaper_top")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> FLORAL_BERRY_WALLPAPER_BOTTOM = registerBlock("floral_berry_wallpaper_bottom",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("floral_berry_wallpaper_bottom")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("floral_berry_wallpaper_bottom")).sound(SoundType.SPORE_BLOSSOM)));
     public static final RegistryObject<Block> FLORAL_BERRY_WALLPAPER_TOP = registerBlock("floral_berry_wallpaper_top",
-            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("floral_berry_wallpaper_top")).sound(SoundType.SPORE_BLOSSOM)));
+            () -> new CustomWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("floral_berry_wallpaper_top")).sound(SoundType.SPORE_BLOSSOM)));
 
     //WAINSCOTING
     public static final RegistryObject<Block> BLUE_WAINSCOTING = registerFuelBlock("blue_wainscoting",
@@ -1397,33 +1401,33 @@ public class BlockRegistration {
             () -> new ShortMediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("box_of_paints")).mapColor(DyeColor.BROWN)));
 
     public static final RegistryObject<Block> THREAD_SPOOL_YELLOW = registerBlock("spool_of_thread_yellow",
-            () -> new ThreadSpoolBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("spool_of_thread_yellow"))));
+            () -> new ThreadSpoolBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("spool_of_thread_yellow"))));
     public static final RegistryObject<Block> THREAD_SPOOL_GREEN = registerBlock("spool_of_thread_green",
-            () -> new ThreadSpoolBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GREEN_WOOL).setId(BLOCKS.key("spool_of_thread_green"))));
+            () -> new ThreadSpoolBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.GREEN)).setId(BLOCKS.key("spool_of_thread_green"))));
     public static final RegistryObject<Block> THREAD_SPOOL_PURPLE = registerBlock("spool_of_thread_purple",
-            () -> new ThreadSpoolBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("spool_of_thread_purple"))));
+            () -> new ThreadSpoolBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("spool_of_thread_purple"))));
     public static final RegistryObject<Block> THREAD_SPOOL_PINK = registerBlock("spool_of_thread_pink",
-            () -> new ThreadSpoolBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("spool_of_thread_pink"))));
+            () -> new ThreadSpoolBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("spool_of_thread_pink"))));
     public static final RegistryObject<Block> CAT_MUGS_CLUTTERED = registerBlock("cat_mugs_cluttered",
-            () -> new ShortMediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("cat_mugs_cluttered")).sound(SoundType.DECORATED_POT).strength(0.3f)));
+            () -> new ShortMediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("cat_mugs_cluttered")).sound(SoundType.DECORATED_POT).strength(0.3f)));
     public static final RegistryObject<Block> CAT_PLANT_POT_BLACK = registerBlock("cat_plant_pot_black",
-            () -> new CatPlantPotBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLACK_WOOL).setId(BLOCKS.key("cat_plant_pot_black")).sound(SoundType.DECORATED_POT)));
+            () -> new CatPlantPotBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLACK)).setId(BLOCKS.key("cat_plant_pot_black")).sound(SoundType.DECORATED_POT)));
     public static final RegistryObject<Block> CAT_PLANT_POT_ORANGE = registerBlock("cat_plant_pot_orange",
-            () -> new CatPlantPotBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ORANGE_CONCRETE).setId(BLOCKS.key("cat_plant_pot_orange")).sound(SoundType.DECORATED_POT)));
+            () -> new CatPlantPotBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CONCRETE.pick(DyeColor.ORANGE)).setId(BLOCKS.key("cat_plant_pot_orange")).sound(SoundType.DECORATED_POT)));
     public static final RegistryObject<Block> COFFEE_GRINDER = registerBlock("coffee_grinder",
             () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("coffee_grinder"))));
     public static final RegistryObject<Block> ENDTABLE_DECOR = registerBlock("endtable_decor",
             () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).setId(BLOCKS.key("endtable_decor")).sound(SoundType.DECORATED_POT).noCollision()));
     public static final RegistryObject<Block> MINI_CACTUS_SET = registerBlock("mini_cactus_set",
-            () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GREEN_WOOL).setId(BLOCKS.key("mini_cactus_set")).sound(SoundType.DECORATED_POT).strength(0.2f)));
+            () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.GREEN)).setId(BLOCKS.key("mini_cactus_set")).sound(SoundType.DECORATED_POT).strength(0.2f)));
     public static final RegistryObject<Block> MUSHROOM_JARS = registerBlock("mushroom_jars",
-            () -> new MushroomJarsBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("mushroom_jars")).sound(SoundType.GLASS).mapColor(DyeColor.BROWN).strength(0.2f)));
+            () -> new MushroomJarsBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("mushroom_jars")).sound(SoundType.GLASS).mapColor(DyeColor.BROWN).strength(0.2f)));
     public static final RegistryObject<Block> NEWSPAPER_PILE_SHORT = registerBlock("newspaper_pile_short",
-            () -> new ShortPaperPileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).setId(BLOCKS.key("newspaper_pile_short")).sound(SoundType.SPORE_BLOSSOM).mapColor(DyeColor.WHITE).strength(0.2f)));
+            () -> new ShortPaperPileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.WHITE)).setId(BLOCKS.key("newspaper_pile_short")).sound(SoundType.SPORE_BLOSSOM).mapColor(DyeColor.WHITE).strength(0.2f)));
     public static final RegistryObject<Block> NEWSPAPER_PILE_TALL = registerBlock("newspaper_pile_tall",
-            () -> new TallPaperPileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).setId(BLOCKS.key("newspaper_pile_tall")).sound(SoundType.SPORE_BLOSSOM).mapColor(DyeColor.WHITE).strength(0.2f)));
+            () -> new TallPaperPileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.WHITE)).setId(BLOCKS.key("newspaper_pile_tall")).sound(SoundType.SPORE_BLOSSOM).mapColor(DyeColor.WHITE).strength(0.2f)));
     public static final RegistryObject<Block> PAPER_PILE = registerBlock("paper_pile",
-            () -> new ShortPaperPileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).setId(BLOCKS.key("paper_pile")).sound(SoundType.SPORE_BLOSSOM).mapColor(DyeColor.WHITE).strength(0.2f)));
+            () -> new ShortPaperPileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.WHITE)).setId(BLOCKS.key("paper_pile")).sound(SoundType.SPORE_BLOSSOM).mapColor(DyeColor.WHITE).strength(0.2f)));
     public static final RegistryObject<Block> FENCE_SHELF = registerBlock("fence_shelf_blue",
             () -> new FenceShelfBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("fence_shelf_blue")).mapColor(DyeColor.BLUE)));
     public static final RegistryObject<Block> HANGING_PLANT_POT_FLOWERS = registerBlock("hanging_plant_pot_flowers",
@@ -1433,14 +1437,14 @@ public class BlockRegistration {
     public static final RegistryObject<Block> PEDESTAL_HK = registerBlock("pedestal_hk",
             () -> new PedestalBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("pedestal_hk")).mapColor(DyeColor.ORANGE)));
     public static final RegistryObject<Block> PICNIC_BASKET = registerBlock("picnic_basket",
-            () -> new PicnicBasketBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("picnic_basket")).mapColor(DyeColor.BLUE)));
+            () -> new PicnicBasketBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("picnic_basket")).mapColor(DyeColor.BLUE)));
     public static final RegistryObject<Block> PICNIC_BASKET_PREPARED = registerBlock("picnic_basket_prepared",
-            () -> new PicnicBasketBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("picnic_basket_prepared")).mapColor(DyeColor.BLUE)));
+            () -> new PicnicBasketBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("picnic_basket_prepared")).mapColor(DyeColor.BLUE)));
 
     public static final RegistryObject<Block> BASKET_OF_FLOWERS = registerBlock("basket_of_flowers",
-            () -> new ProduceBasketBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("basket_of_flowers")).mapColor(DyeColor.YELLOW)));
+            () -> new ProduceBasketBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("basket_of_flowers")).mapColor(DyeColor.YELLOW)));
     public static final RegistryObject<Block> BASKET_OF_PRODUCE = registerBlock("basket_of_produce",
-            () -> new ProduceBasketBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ORANGE_WOOL).setId(BLOCKS.key("basket_of_produce")).mapColor(DyeColor.ORANGE)));
+            () -> new ProduceBasketBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.ORANGE)).setId(BLOCKS.key("basket_of_produce")).mapColor(DyeColor.ORANGE)));
 
     public static final RegistryObject<Block> ROW_OF_SMALL_BOOKS = registerBlock("row_of_small_books",
             () -> new SmallBookRowBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).setId(BLOCKS.key("row_of_small_books")).sound(SoundType.CHERRY_WOOD).mapColor(DyeColor.BLUE)));
@@ -1455,9 +1459,9 @@ public class BlockRegistration {
     public static final RegistryObject<Block> SMALL_SHELF_PINK = registerBlock("small_shelf_pink",
             () -> new SmallShelfBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("small_shelf_pink")).mapColor(DyeColor.PINK)));
     public static final RegistryObject<Block> RUBIKS_CUBE = registerBlock("rubiks_cube",
-            () -> new RubiksCubeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("rubiks_cube")).sound(SoundType.DEEPSLATE_BRICKS).mapColor(DyeColor.RED)));
+            () -> new RubiksCubeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("rubiks_cube")).sound(SoundType.DEEPSLATE_BRICKS).mapColor(DyeColor.RED)));
     public static final RegistryObject<Block> RUBIKS_CUBE_PASTEL = registerBlock("rubiks_cube_pastel",
-            () -> new RubiksCubeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("rubiks_cube_pastel")).sound(SoundType.DEEPSLATE_BRICKS).mapColor(DyeColor.PINK)));
+            () -> new RubiksCubeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("rubiks_cube_pastel")).sound(SoundType.DEEPSLATE_BRICKS).mapColor(DyeColor.PINK)));
     public static final RegistryObject<Block> SCATTERED_PAPERS = registerBlock("scattered_papers",
             () -> new FlatFloorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPORE_BLOSSOM).setId(BLOCKS.key("scattered_papers")).mapColor(DyeColor.WHITE).noCollision()));
     public static final RegistryObject<Block> SEWING_MACHINE_ANTIQUE = registerBlock("sewing_machine_antique",
@@ -1465,10 +1469,10 @@ public class BlockRegistration {
     public static final RegistryObject<Block> SMALL_BUSH = registerBlock("small_bush",
             () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).setId(BLOCKS.key("small_bush"))));
     public static final RegistryObject<Block> TEDDY_BEAR = registerBlock("teddy_bear",
-            () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("teddy_bear"))));
+            () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("teddy_bear"))));
 
     public static final RegistryObject<Block> POLAROID_CAMERA = registerBlock("polaroid_camera",
-            () -> new PolaroidCameraBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GRAY_WOOL).setId(BLOCKS.key("polaroid_camera")).sound(SoundType.SCAFFOLDING)));
+            () -> new PolaroidCameraBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.GRAY)).setId(BLOCKS.key("polaroid_camera")).sound(SoundType.SCAFFOLDING)));
 
     public static final RegistryObject<Block> RED_MUSHROOM_TV = registerBlock("red_mushroom_tv",
             () -> new MushroomTVBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("red_mushroom_tv")).mapColor(DyeColor.RED).lightLevel(p -> p.getValue(MushroomTVBlock.CHANNEL) == 0 ? 0 : 6)));
@@ -1479,7 +1483,7 @@ public class BlockRegistration {
     public static final RegistryObject<Block> RED_MUSHROOM_WARDROBE = registerBlock("red_mushroom_wardrobe",
             () -> new MushroomWardrobeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("red_mushroom_wardrobe")).mapColor(DyeColor.RED).noOcclusion()));
     public static final RegistryObject<Block> RED_MUSHROOM_BED = registerBlock("red_mushroom_bed",
-            () -> new MushroomBedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("red_mushroom_bed")).mapColor(DyeColor.RED)));
+            () -> new MushroomBedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("red_mushroom_bed")).mapColor(DyeColor.RED).bounceRestitution(0.66F)));
 
     public static final RegistryObject<Block> BLUE_MUSHROOM_TV = registerBlock("blue_mushroom_tv",
             () -> new MushroomTVBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("blue_mushroom_tv")).mapColor(DyeColor.BLUE).lightLevel(p -> p.getValue(MushroomTVBlock.CHANNEL) == 0 ? 0 : 6)));
@@ -1490,17 +1494,17 @@ public class BlockRegistration {
     public static final RegistryObject<Block> BLUE_MUSHROOM_WARDROBE = registerBlock("blue_mushroom_wardrobe",
             () -> new MushroomWardrobeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("blue_mushroom_wardrobe")).mapColor(DyeColor.BLUE).noOcclusion()));
     public static final RegistryObject<Block> BLUE_MUSHROOM_BED = registerBlock("blue_mushroom_bed",
-            () -> new MushroomBedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("blue_mushroom_bed")).mapColor(DyeColor.BLUE)));
+            () -> new MushroomBedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("blue_mushroom_bed")).mapColor(DyeColor.BLUE).bounceRestitution(0.66F)));
 
     //TODO idr if i ahve another to do somewhere else sorry
     public static final RegistryObject<Block> BOOK_OPEN = registerBlock("book_open",
-            () -> new ShortMediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("book_open")).sound(SoundType.CHERRY_WOOD).strength(0.2f)));
+            () -> new ShortMediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("book_open")).sound(SoundType.CHERRY_WOOD).strength(0.2f)));
     public static final RegistryObject<Block> BRASS_KEY = registerBlock("brass_key",
             () -> new SmallFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("brass_key")).sound(SoundType.STONE).strength(0.5f)));
     public static final RegistryObject<Block> ENVELOPE_STACK = registerBlock("envelope_stack",
-            () -> new FlatClutterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("envelope_stack")).sound(SoundType.SPORE_BLOSSOM).strength(0.2f)));
+            () -> new FlatClutterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("envelope_stack")).sound(SoundType.SPORE_BLOSSOM).strength(0.2f)));
     public static final RegistryObject<Block> FLOWER_DESK_LAMP = registerBlock("flower_desk_lamp",
-            () -> new FlowerDeskLampBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("flower_desk_lamp")).strength(0.4f).sound(SoundType.CHERRY_LEAVES).lightLevel(p -> 15)));
+            () -> new FlowerDeskLampBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("flower_desk_lamp")).strength(0.4f).sound(SoundType.CHERRY_LEAVES).lightLevel(p -> 15)));
     public static final RegistryObject<Block> GLOW_FLOWER = registerBlock("glow_flower",
             () -> new GlowFlowerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_TULIP).setId(BLOCKS.key("glow_flower")).strength(0.2f).sound(SoundType.SPORE_BLOSSOM).lightLevel(p -> 14).noOcclusion()));
     public static final RegistryObject<Block> FLOWER_SHELF_BLUE = registerBlock("flower_shelf_blue",
@@ -1516,53 +1520,53 @@ public class BlockRegistration {
     public static final RegistryObject<Block> FLOWER_SHELF_YELLOW = registerBlock("flower_shelf_yellow",
             () -> new FlowerShelfBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("flower_shelf_yellow")).strength(0.4f)));
     public static final RegistryObject<Block> FLOWER_SHELF_CANDLE_BLUE = registerBlock("flower_shelf_candle_blue",
-            () -> new ShelfCandleBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).setId(BLOCKS.key("flower_shelf_candle_blue")).sound(SoundType.CANDLE).strength(0.1f).lightLevel(p -> p.getValue(ShelfCandleBlock.LIT) ? 10 : 0)));
+            () -> new ShelfCandleBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.WHITE)).setId(BLOCKS.key("flower_shelf_candle_blue")).sound(SoundType.CANDLE).strength(0.1f).lightLevel(p -> p.getValue(ShelfCandleBlock.LIT) ? 10 : 0)));
     public static final RegistryObject<Block> FLOWER_SHELF_CANDLE_GREEN = registerBlock("flower_shelf_candle_green",
-            () -> new ShelfCandleBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).setId(BLOCKS.key("flower_shelf_candle_green")).sound(SoundType.CANDLE).strength(0.1f).lightLevel(p -> p.getValue(ShelfCandleBlock.LIT) ? 10 : 0)));
+            () -> new ShelfCandleBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.WHITE)).setId(BLOCKS.key("flower_shelf_candle_green")).sound(SoundType.CANDLE).strength(0.1f).lightLevel(p -> p.getValue(ShelfCandleBlock.LIT) ? 10 : 0)));
     public static final RegistryObject<Block> FLOWER_SHELF_CANDLE_PASTEL_YELLOW = registerBlock("flower_shelf_candle_pastel_yellow",
-            () -> new ShelfCandleBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).setId(BLOCKS.key("flower_shelf_candle_pastel_yellow")).sound(SoundType.CANDLE).strength(0.1f).lightLevel(p -> p.getValue(ShelfCandleBlock.LIT) ? 10 : 0)));
+            () -> new ShelfCandleBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.WHITE)).setId(BLOCKS.key("flower_shelf_candle_pastel_yellow")).sound(SoundType.CANDLE).strength(0.1f).lightLevel(p -> p.getValue(ShelfCandleBlock.LIT) ? 10 : 0)));
     public static final RegistryObject<Block> FLOWER_SHELF_CANDLE_PINK = registerBlock("flower_shelf_candle_pink",
-            () -> new ShelfCandleBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).setId(BLOCKS.key("flower_shelf_candle_pink")).sound(SoundType.CANDLE).strength(0.1f).lightLevel(p -> p.getValue(ShelfCandleBlock.LIT) ? 10 : 0)));
+            () -> new ShelfCandleBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.WHITE)).setId(BLOCKS.key("flower_shelf_candle_pink")).sound(SoundType.CANDLE).strength(0.1f).lightLevel(p -> p.getValue(ShelfCandleBlock.LIT) ? 10 : 0)));
     public static final RegistryObject<Block> FLOWER_SHELF_CANDLE_PURPLE = registerBlock("flower_shelf_candle_purple",
-            () -> new ShelfCandleBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).setId(BLOCKS.key("flower_shelf_candle_purple")).sound(SoundType.CANDLE).strength(0.1f).lightLevel(p -> p.getValue(ShelfCandleBlock.LIT) ? 10 : 0)));
+            () -> new ShelfCandleBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.WHITE)).setId(BLOCKS.key("flower_shelf_candle_purple")).sound(SoundType.CANDLE).strength(0.1f).lightLevel(p -> p.getValue(ShelfCandleBlock.LIT) ? 10 : 0)));
     public static final RegistryObject<Block> FLOWER_SHELF_CANDLE_YELLOW = registerBlock("flower_shelf_candle_yellow",
-            () -> new ShelfCandleBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).setId(BLOCKS.key("flower_shelf_candle_yellow")).sound(SoundType.CANDLE).strength(0.1f).lightLevel(p -> p.getValue(ShelfCandleBlock.LIT) ? 10 : 0)));
+            () -> new ShelfCandleBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.WHITE)).setId(BLOCKS.key("flower_shelf_candle_yellow")).sound(SoundType.CANDLE).strength(0.1f).lightLevel(p -> p.getValue(ShelfCandleBlock.LIT) ? 10 : 0)));
     public static final RegistryObject<Block> FLOWER_SHELF_PLANT = registerBlock("flower_shelf_plant",
-            () -> new FlowerShelfPlantBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).setId(BLOCKS.key("flower_shelf_plant")).sound(SoundType.DECORATED_POT).strength(0.2f)));
+            () -> new FlowerShelfPlantBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.WHITE)).setId(BLOCKS.key("flower_shelf_plant")).sound(SoundType.DECORATED_POT).strength(0.2f)));
     public static final RegistryObject<Block> FLOWER_TEA_KETTLE = registerBlock("flower_tea_kettle",
-            () -> new TeaKettleBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).setId(BLOCKS.key("flower_tea_kettle")).sound(SoundType.DECORATED_POT)));
+            () -> new TeaKettleBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.WHITE)).setId(BLOCKS.key("flower_tea_kettle")).sound(SoundType.DECORATED_POT)));
     public static final RegistryObject<Block> HEAVENLY_ORNAMENTAL_ARRAY = registerBlock("heavenly_ornamental_array",
             () -> new HeavenlyArrayBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("heavenly_ornamental_array")).sound(SoundType.AMETHYST).strength(0.3f).lightLevel(p -> 4).noOcclusion()));
     public static final RegistryObject<Block> SALT_PEPPER_SHAKERS = registerBlock("salt_pepper_shakers",
             () -> new SaltAndPepperBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).setId(BLOCKS.key("salt_pepper_shakers"))));
     public static final RegistryObject<Block> SAND_SEAL_PLUSH_BLUE = registerBlock("sand_seal_plush_blue",
-            () -> new SandsealPlushBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("sand_seal_plush_blue"))));
+            () -> new SandsealPlushBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("sand_seal_plush_blue"))));
     public static final RegistryObject<Block> SAND_SEAL_PLUSH_GREEN = registerBlock("sand_seal_plush_green",
-            () -> new SandsealPlushBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("sand_seal_plush_green"))));
+            () -> new SandsealPlushBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("sand_seal_plush_green"))));
     public static final RegistryObject<Block> SAND_SEAL_PLUSH_RED = registerBlock("sand_seal_plush_red",
-            () -> new SandsealPlushBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("sand_seal_plush_red"))));
+            () -> new SandsealPlushBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("sand_seal_plush_red"))));
     public static final RegistryObject<Block> SKETCHBOOK_SINGLE = registerBlock("sketchbook_single",
-            () -> new FlatClutterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("sketchbook_single")).sound(SoundType.SPORE_BLOSSOM).strength(0.2f)));
+            () -> new FlatClutterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("sketchbook_single")).sound(SoundType.SPORE_BLOSSOM).strength(0.2f)));
     public static final RegistryObject<Block> STACK_OF_BOOKS = registerBlock("stack_of_books",
-            () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GREEN_WOOL).setId(BLOCKS.key("stack_of_books")).sound(SoundType.CHERRY_WOOD)));
+            () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.GREEN)).setId(BLOCKS.key("stack_of_books")).sound(SoundType.CHERRY_WOOD)));
     public static final RegistryObject<Block> STACK_OF_BOOKS_TALL = registerBlock("stack_of_books_tall",
-            () -> new BookStackBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GREEN_WOOL).setId(BLOCKS.key("stack_of_books_tall")).sound(SoundType.CHERRY_WOOD)));
+            () -> new BookStackBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.GREEN)).setId(BLOCKS.key("stack_of_books_tall")).sound(SoundType.CHERRY_WOOD)));
     public static final RegistryObject<Block> SWEETHEART_BAKING_SET_BOWL = registerBlock("sweetheart_baking_set_bowl",
-            () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("sweetheart_baking_set_bowl")).sound(SoundType.WOOD).strength(0.2f)));
+            () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("sweetheart_baking_set_bowl")).sound(SoundType.WOOD).strength(0.2f)));
     public static final RegistryObject<Block> SWEETHEART_BAKING_SET_INGREDIENTS = registerBlock("sweetheart_baking_set_ingredients",
-            () -> new BakingIngredientsBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("sweetheart_baking_set_ingredients")).noOcclusion()));
+            () -> new BakingIngredientsBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("sweetheart_baking_set_ingredients")).noOcclusion()));
     public static final RegistryObject<Block> WINE_BOTTLE_RACK = registerBlock("wine_bottle_rack",
             () -> new WineBottleRackBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("wine_bottle_rack")).strength(0.5f)));
     public static final RegistryObject<Block> WINE_BOTTLES = registerBlock("wine_bottles",
-            () -> new WineBottlesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("wine_bottles")).sound(SoundType.GLASS).strength(0.2f)));
+            () -> new WineBottlesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("wine_bottles")).sound(SoundType.GLASS).strength(0.2f)));
     public static final RegistryObject<Block> YELLOW_NOTEPAD = registerBlock("yellow_notepad",
-            () -> new FlatClutterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("yellow_notepad")).sound(SoundType.SPORE_BLOSSOM).strength(0.2f)));
+            () -> new FlatClutterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("yellow_notepad")).sound(SoundType.SPORE_BLOSSOM).strength(0.2f)));
     public static final RegistryObject<Block> FABRIC_BOLTS = registerBlock("fabric_bolts",
-            () -> new FabricBoltsBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("fabric_bolts")).strength(0.4f)));
+            () -> new FabricBoltsBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("fabric_bolts")).strength(0.4f)));
     public static final RegistryObject<Block> SCISSORS_AND_THREAD = registerBlock("scissors_and_thread",
-            () -> new FlatClutterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("scissors_and_thread")).noCollision().strength(0.2f)));
+            () -> new FlatClutterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("scissors_and_thread")).noCollision().strength(0.2f)));
     public static final RegistryObject<Block> SLICED_BREAD = registerBlock("sliced_bread",
-            () -> new SlicedBreadBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("sliced_bread"))));
+            () -> new SlicedBreadBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("sliced_bread"))));
     public static final RegistryObject<Block> VIAL_STAND = registerBlock("vial_stand",
             () -> new VialStandBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).setId(BLOCKS.key("vial_stand")).strength(0.4f)));
     public static final RegistryObject<Block> PINEAPPLE = registerBlock("pineapple",
@@ -1573,7 +1577,7 @@ public class BlockRegistration {
             () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TERRACOTTA).setId(BLOCKS.key("seaweed_planter")).sound(SoundType.DECORATED_POT).mapColor(DyeColor.GREEN)));
     //TODO remove maybe?
     public static final RegistryObject<Block> MUSHROOM_FLAT = registerBlock("mushroom_flat",
-            () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("mushroom_flat"))));
+            () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("mushroom_flat"))));
 
     //SMALL STORAGE
     //MISC
@@ -1584,7 +1588,7 @@ public class BlockRegistration {
     public static final RegistryObject<Block> SAFE_NOVAKID = registerBlock("safe_novakid",
             () -> new NovakidSafeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).setId(BLOCKS.key("safe_novakid")).sound(SoundType.ANVIL)));
     public static final RegistryObject<Block> FILING_BOX = registerBlock("filing_box",
-            () -> new FilingBoxBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLACK_WOOL).setId(BLOCKS.key("filing_box")).sound(SoundType.WOOD)));
+            () -> new FilingBoxBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLACK)).setId(BLOCKS.key("filing_box")).sound(SoundType.WOOD)));
 
     //KITCHEN SETS
     public static final RegistryObject<Block> KITCHEN_SET_BROWN_CABINET = registerBlock("kitchen_set_brown_cabinet",
@@ -1760,7 +1764,7 @@ public class BlockRegistration {
     public static final RegistryObject<Block> TRADITIONAL_RADIO = registerBlock("traditional_radio",
             () -> new TraditionalRadioBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("traditional_radio")).noOcclusion()));
     public static final RegistryObject<Block> TWO_FLOWER_POTS = registerBlock("two_flower_pots",
-            () -> new MushroomJarsBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("two_flower_pots")).sound(SoundType.DECORATED_POT)));
+            () -> new MushroomJarsBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("two_flower_pots")).sound(SoundType.DECORATED_POT)));
     public static final RegistryObject<Block> SEWING_MANNEQUIN = registerBlock("sewing_mannequin",
             () -> new SewingMannequinBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("sewing_mannequin"))));
     public static final RegistryObject<Block> STARS_PENDANT = registerBlock("stars_pendant",
@@ -1790,9 +1794,9 @@ public class BlockRegistration {
     public static final RegistryObject<Block> COTTAGE_STANDING_LAMP = registerBlock("cottage_standing_lamp",
             () -> new CottageLampBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD).setId(BLOCKS.key("cottage_standing_lamp")).strength(0.5f).lightLevel(p -> 15)));
     public static final RegistryObject<Block> DRYING_HERBS = registerBlock("drying_herbs",
-            () -> new DryingHerbsBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).setId(BLOCKS.key("drying_herbs"))));
+            () -> new DryingHerbsBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.WHITE)).setId(BLOCKS.key("drying_herbs"))));
     public static final RegistryObject<Block> HANGING_CLOTH = registerBlock("hanging_cloth",
-            () -> new HangingClothBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).setId(BLOCKS.key("hanging_cloth"))));
+            () -> new HangingClothBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.WHITE)).setId(BLOCKS.key("hanging_cloth"))));
 
     public static final RegistryObject<Block> MINI_HANGING_TERRARIUMS = registerBlock("mini_hanging_terrariums",
             () -> new HangingMiniTerrariumsBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).setId(BLOCKS.key("mini_hanging_terrariums"))));
@@ -1808,11 +1812,11 @@ public class BlockRegistration {
             () -> new SmallFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("seltzer_cans")).strength(0.3f).sound(SoundType.COPPER)));
 
     public static final RegistryObject<Block> SMALL_CAULDRON = registerBlock("small_cauldron_set",
-            () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK).setId(BLOCKS.key("small_cauldron_set")).strength(1.0f).sound(SoundType.COPPER)));
+            () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK.weathering().unaffected()).setId(BLOCKS.key("small_cauldron_set")).strength(1.0f).sound(SoundType.COPPER)));
     public static final RegistryObject<Block> STEAMPUNK_LAMP = registerBlock("steampunk_lamp",
-            () -> new SteampunkLampBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK).setId(BLOCKS.key("steampunk_lamp")).sound(SoundType.COPPER).lightLevel(p -> 15)));
+            () -> new SteampunkLampBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK.weathering().unaffected()).setId(BLOCKS.key("steampunk_lamp")).sound(SoundType.COPPER).lightLevel(p -> 15)));
     public static final RegistryObject<Block> TARRY_TOWN_STOVE = registerBlock("tarrytown_stove",
-            () -> new TarrytownStoveBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK).setId(BLOCKS.key("tarrytown_stove")).sound(SoundType.COPPER).lightLevel(p -> p.getValue(TarrytownStoveBlock.LIT) ? 15 : 0).noOcclusion()));
+            () -> new TarrytownStoveBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK.weathering().unaffected()).setId(BLOCKS.key("tarrytown_stove")).sound(SoundType.COPPER).lightLevel(p -> p.getValue(TarrytownStoveBlock.LIT) ? 15 : 0).noOcclusion()));
 
     //TODO
     public static final RegistryObject<Block> HOPPIN_PARK_LANTERN = registerBlock("hoppin_park_lantern",
@@ -1850,10 +1854,10 @@ public class BlockRegistration {
     public static final RegistryObject<Block> WATERING_CAN = registerBlock("watering_can",
             () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).setId(BLOCKS.key("watering_can")).strength(1.0f)));
     public static final RegistryObject<Block> WATERING_CAN_COPPER = registerBlock("watering_can_copper",
-            () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK).setId(BLOCKS.key("watering_can_copper")).strength(1.0f)));
+            () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK.weathering().unaffected()).setId(BLOCKS.key("watering_can_copper")).strength(1.0f)));
 
     public static final RegistryObject<Block> VIOLET_SCREEN = registerBlock("violet_screen",
-            () -> new VioletScreenBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("violet_screen")).sound(SoundType.WOOD)));
+            () -> new VioletScreenBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("violet_screen")).sound(SoundType.WOOD)));
 
     //SMALL TABLES
     public static final RegistryObject<Block> COTTAGE_SIDE_TABLE = registerBlock("cottage_side_table",
@@ -1898,7 +1902,7 @@ public class BlockRegistration {
             () -> new PuzzlePieceTableBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("puzzle_piece_table_green")).mapColor(DyeColor.GREEN).noOcclusion()));
 
     public static final RegistryObject<Block> LEMON_TABLE = registerBlock("lemon_table",
-            () -> new LemonTableBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_CONCRETE).setId(BLOCKS.key("lemon_table")).mapColor(DyeColor.YELLOW).noOcclusion()));
+            () -> new LemonTableBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CONCRETE.pick(DyeColor.YELLOW)).setId(BLOCKS.key("lemon_table")).mapColor(DyeColor.YELLOW).noOcclusion()));
 
 
     //ROTATIONAL FACE BLOCKS
@@ -1918,34 +1922,34 @@ public class BlockRegistration {
             () -> new FlatDirectionalBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPORE_BLOSSOM).setId(BLOCKS.key("polaroids_c"))));
 
     public static final RegistryObject<Block> MINI_FLAG_BI = registerBlock("mini_flag_bi",
-            () -> new MiniFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("mini_flag_bi")).strength(0f).noCollision()));
+            () -> new MiniFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("mini_flag_bi")).strength(0f).noCollision()));
     public static final RegistryObject<Block> MINI_FLAG_LESBIAN = registerBlock("mini_flag_lesbian",
-            () -> new MiniFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ORANGE_WOOL).setId(BLOCKS.key("mini_flag_lesbian")).strength(0f).noCollision()));
+            () -> new MiniFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.ORANGE)).setId(BLOCKS.key("mini_flag_lesbian")).strength(0f).noCollision()));
     public static final RegistryObject<Block> MINI_FLAG_TRANS = registerBlock("mini_flag_trans",
-            () -> new MiniFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("mini_flag_trans")).strength(0f).noCollision()));
+            () -> new MiniFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("mini_flag_trans")).strength(0f).noCollision()));
     public static final RegistryObject<Block> MINI_FLAG_NONBINARY = registerBlock("mini_flag_nonbinary",
-            () -> new MiniFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("mini_flag_nonbinary")).strength(0f).noCollision()));
+            () -> new MiniFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("mini_flag_nonbinary")).strength(0f).noCollision()));
     public static final RegistryObject<Block> MINI_FLAG_PAN = registerBlock("mini_flag_pan",
-            () -> new MiniFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("mini_flag_pan")).strength(0f).noCollision()));
+            () -> new MiniFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("mini_flag_pan")).strength(0f).noCollision()));
     public static final RegistryObject<Block> MINI_FLAG_RAINBOW = registerBlock("mini_flag_rainbow",
-            () -> new MiniFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("mini_flag_rainbow")).strength(0f).noCollision()));
+            () -> new MiniFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("mini_flag_rainbow")).strength(0f).noCollision()));
     public static final RegistryObject<Block> MINI_FLAG_ACE = registerBlock("mini_flag_ace",
-            () -> new MiniFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("mini_flag_ace")).strength(0f).noCollision()));
+            () -> new MiniFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("mini_flag_ace")).strength(0f).noCollision()));
 
     public static final RegistryObject<Block> ANIMATED_FLAG_ASEXUAL = registerBlock("animated_flag_asexual",
-            () -> new AnimatedFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("animated_flag_asexual")).noCollision().sound(SoundType.LANTERN).strength(0.5f)));
+            () -> new AnimatedFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("animated_flag_asexual")).noCollision().sound(SoundType.LANTERN).strength(0.5f)));
     public static final RegistryObject<Block> ANIMATED_FLAG_BISEXUAL = registerBlock("animated_flag_bisexual",
-            () -> new AnimatedFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("animated_flag_bisexual")).noCollision().sound(SoundType.LANTERN).strength(0.5f)));
+            () -> new AnimatedFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("animated_flag_bisexual")).noCollision().sound(SoundType.LANTERN).strength(0.5f)));
     public static final RegistryObject<Block> ANIMATED_FLAG_PANSEXUAL = registerBlock("animated_flag_pansexual",
-            () -> new AnimatedFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("animated_flag_pansexual")).noCollision().sound(SoundType.LANTERN).strength(0.5f)));
+            () -> new AnimatedFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("animated_flag_pansexual")).noCollision().sound(SoundType.LANTERN).strength(0.5f)));
     public static final RegistryObject<Block> ANIMATED_FLAG_LESBIAN = registerBlock("animated_flag_lesbian",
-            () -> new AnimatedFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("animated_flag_lesbian")).noCollision().sound(SoundType.LANTERN).strength(0.5f)));
+            () -> new AnimatedFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("animated_flag_lesbian")).noCollision().sound(SoundType.LANTERN).strength(0.5f)));
     public static final RegistryObject<Block> ANIMATED_FLAG_TRANSGENDER = registerBlock("animated_flag_transgender",
-            () -> new AnimatedFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("animated_flag_transgender")).noCollision().sound(SoundType.LANTERN).strength(0.5f)));
+            () -> new AnimatedFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("animated_flag_transgender")).noCollision().sound(SoundType.LANTERN).strength(0.5f)));
     public static final RegistryObject<Block> ANIMATED_FLAG_NONBINARY = registerBlock("animated_flag_nonbinary",
-            () -> new AnimatedFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("animated_flag_nonbinary")).noCollision().sound(SoundType.LANTERN).strength(0.5f)));
+            () -> new AnimatedFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("animated_flag_nonbinary")).noCollision().sound(SoundType.LANTERN).strength(0.5f)));
     public static final RegistryObject<Block> ANIMATED_FLAG_RAINBOW = registerBlock("animated_flag_rainbow",
-            () -> new AnimatedFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("animated_flag_rainbow")).noCollision().sound(SoundType.LANTERN).strength(0.5f)));
+            () -> new AnimatedFlagBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("animated_flag_rainbow")).noCollision().sound(SoundType.LANTERN).strength(0.5f)));
 
 
     //DARKWOOD SET
@@ -1962,7 +1966,7 @@ public class BlockRegistration {
     public static final RegistryObject<Block> DARKWOOD_SOFA_QUILTED = registerBlock("darkwood_sofa_quilted",
             () -> new DarkwoodSofaBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD).setId(BLOCKS.key("darkwood_sofa_quilted")).noOcclusion()));
     public static final RegistryObject<Block> DARKWOOD_SOFA_SOUTHERN_FLAIR = registerBlock("darkwood_sofa_southern_flair",
-            () -> new DarkwoodSofaBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("darkwood_sofa_southern_flair")).noOcclusion()));
+            () -> new DarkwoodSofaBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("darkwood_sofa_southern_flair")).noOcclusion()));
     public static final RegistryObject<Block> DARKWOOD_CLOCK = registerBlock("darkwood_clock",
             () -> new DarkwoodClockBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD).setId(BLOCKS.key("darkwood_clock")).strength(0.4f)));
     public static final RegistryObject<Block> DARKWOOD_DECORATIVE_SHELVES_GEOMETRIC = registerBlock("darkwood_decorative_shelves_geometric",
@@ -1978,11 +1982,11 @@ public class BlockRegistration {
     public static final RegistryObject<Block> DARKWOOD_TABLE = registerBlock("darkwood_table",
             () -> new DarkwoodTableBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD).setId(BLOCKS.key("darkwood_table")).mapColor(DyeColor.BROWN).noOcclusion()));
     public static final RegistryObject<Block> DARKWOOD_BED_GEOMETRIC = registerBlock("darkwood_bed_geometric",
-            () -> new DarkwoodBedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD).setId(BLOCKS.key("darkwood_bed_geometric")).mapColor(DyeColor.BROWN).noOcclusion()));
+            () -> new DarkwoodBedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD).setId(BLOCKS.key("darkwood_bed_geometric")).mapColor(DyeColor.BROWN).noOcclusion().bounceRestitution(0.66F)));
     public static final RegistryObject<Block> DARKWOOD_BED_QUILTED = registerBlock("darkwood_bed_quilted",
-            () -> new DarkwoodBedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD).setId(BLOCKS.key("darkwood_bed_quilted")).mapColor(DyeColor.BROWN).noOcclusion()));
+            () -> new DarkwoodBedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD).setId(BLOCKS.key("darkwood_bed_quilted")).mapColor(DyeColor.BROWN).noOcclusion().bounceRestitution(0.66F)));
     public static final RegistryObject<Block> DARKWOOD_BED_SOUTHERN_FLAIR = registerBlock("darkwood_bed_southern_flair",
-            () -> new DarkwoodBedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD).setId(BLOCKS.key("darkwood_bed_southern_flair")).mapColor(DyeColor.BROWN).noOcclusion()));
+            () -> new DarkwoodBedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD).setId(BLOCKS.key("darkwood_bed_southern_flair")).mapColor(DyeColor.BROWN).noOcclusion().bounceRestitution(0.66F)));
 
     //WOODEN BLOCK BOOKSHELF
     public static final RegistryObject<Block> WOODEN_BLOCK_BOOKSHELF_PASTEL = registerBlock("wooden_block_bookshelf_pastel",
@@ -1990,7 +1994,7 @@ public class BlockRegistration {
 
     //PASTEL SET
     public static final RegistryObject<Block> PASTEL_BED = registerBlock("pastel_bed",
-            () -> new PastelBedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD).setId(BLOCKS.key("pastel_bed")).mapColor(DyeColor.PINK).noOcclusion()));
+            () -> new PastelBedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD).setId(BLOCKS.key("pastel_bed")).mapColor(DyeColor.PINK).noOcclusion().bounceRestitution(0.66F)));
     public static final RegistryObject<Block> PASTEL_CABINET = registerBlock("pastel_cabinet",
             () -> new PastelCabinetBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD).setId(BLOCKS.key("pastel_cabinet")).mapColor(DyeColor.PINK)));
     public static final RegistryObject<Block> PASTEL_CHAIR = registerBlock("pastel_chair",
@@ -2002,7 +2006,7 @@ public class BlockRegistration {
     public static final RegistryObject<Block> PASTEL_TABLE = registerBlock("pastel_table",
             () -> new TableBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD).setId(BLOCKS.key("pastel_table")).mapColor(DyeColor.PINK)));
     public static final RegistryObject<Block> PASTEL_PLUSH = registerBlock("pastel_bunny_plushie",
-            () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("pastel_bunny_plushie")).mapColor(DyeColor.PINK)));
+            () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("pastel_bunny_plushie")).mapColor(DyeColor.PINK)));
     public static final RegistryObject<Block> PASTEL_WARDROBE = registerBlock("pastel_wardrobe",
             () -> new PastelWardrobeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD).setId(BLOCKS.key("pastel_wardrobe")).mapColor(DyeColor.PINK).noOcclusion()));
 
@@ -2018,19 +2022,19 @@ public class BlockRegistration {
 
     //TERRARIUMS
     public static final RegistryObject<Block> GLOWSHROOM_TERRARIUM_YELLOW = registerBlock("glowshroom_terrarium_yellow",
-            () -> new MushroomTerrariumBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("glowshroom_terrarium_yellow")).sound(SoundType.GLASS).mapColor(DyeColor.YELLOW).lightLevel(p -> 15), true));
+            () -> new MushroomTerrariumBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("glowshroom_terrarium_yellow")).sound(SoundType.GLASS).mapColor(DyeColor.YELLOW).lightLevel(p -> 15), true));
     public static final RegistryObject<Block> GLOWSHROOM_TERRARIUM_GREEN = registerBlock("glowshroom_terrarium_green",
-            () -> new MushroomTerrariumBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("glowshroom_terrarium_green")).sound(SoundType.GLASS).mapColor(DyeColor.GREEN).lightLevel(p -> 15), true));
+            () -> new MushroomTerrariumBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("glowshroom_terrarium_green")).sound(SoundType.GLASS).mapColor(DyeColor.GREEN).lightLevel(p -> 15), true));
     public static final RegistryObject<Block> GLOWSHROOM_TERRARIUM_BLUE = registerBlock("glowshroom_terrarium_blue",
-            () -> new MushroomTerrariumBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("glowshroom_terrarium_blue")).sound(SoundType.GLASS).mapColor(DyeColor.BLUE).lightLevel(p -> 15), true));
+            () -> new MushroomTerrariumBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("glowshroom_terrarium_blue")).sound(SoundType.GLASS).mapColor(DyeColor.BLUE).lightLevel(p -> 15), true));
     public static final RegistryObject<Block> GLOWSHROOM_TERRARIUM_PURPLE = registerBlock("glowshroom_terrarium_purple",
-            () -> new MushroomTerrariumBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("glowshroom_terrarium_purple")).sound(SoundType.GLASS).mapColor(DyeColor.PURPLE).lightLevel(p -> 15), true));
+            () -> new MushroomTerrariumBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("glowshroom_terrarium_purple")).sound(SoundType.GLASS).mapColor(DyeColor.PURPLE).lightLevel(p -> 15), true));
     public static final RegistryObject<Block> GLOWSHROOM_TERRARIUM_PINK = registerBlock("glowshroom_terrarium_pink",
-            () -> new MushroomTerrariumBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("glowshroom_terrarium_pink")).sound(SoundType.GLASS).mapColor(DyeColor.PINK).lightLevel(p -> 15), true));
+            () -> new MushroomTerrariumBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("glowshroom_terrarium_pink")).sound(SoundType.GLASS).mapColor(DyeColor.PINK).lightLevel(p -> 15), true));
     public static final RegistryObject<Block> MUSHROOM_TERRARIUM_RED = registerBlock("mushroom_terrarium_red",
-            () -> new MushroomTerrariumBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("mushroom_terrarium_red")).sound(SoundType.GLASS).mapColor(DyeColor.RED), false));
+            () -> new MushroomTerrariumBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("mushroom_terrarium_red")).sound(SoundType.GLASS).mapColor(DyeColor.RED), false));
     public static final RegistryObject<Block> MUSHROOM_TERRARIUM_BROWN = registerBlock("mushroom_terrarium_brown",
-            () -> new MushroomTerrariumBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("mushroom_terrarium_brown")).sound(SoundType.GLASS).mapColor(DyeColor.BROWN), false));
+            () -> new MushroomTerrariumBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("mushroom_terrarium_brown")).sound(SoundType.GLASS).mapColor(DyeColor.BROWN), false));
 
 
     //RECORD PLAYERS
@@ -2063,7 +2067,7 @@ public class BlockRegistration {
     public static final RegistryObject<Block> LUNAR_OBSERVATORY_BOOKS = registerBlock("lunar_observatory_books",
             () -> new MediumFurnitureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("lunar_observatory_books")).sound(SoundType.CHERRY_WOOD).mapColor(DyeColor.BLUE)));
     public static final RegistryObject<Block> LUNAR_OBSERVATORY_GLOBE = registerBlock("lunar_observatory_globe",
-            () -> new LunarObservatoryGlobeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK).setId(BLOCKS.key("lunar_observatory_globe")).mapColor(DyeColor.YELLOW)));
+            () -> new LunarObservatoryGlobeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK.weathering().unaffected()).setId(BLOCKS.key("lunar_observatory_globe")).mapColor(DyeColor.YELLOW)));
     public static final RegistryObject<Block> LUNAR_OBSERVATORY_PEDESTAL = registerBlock("lunar_observatory_pedestal_table",
             () -> new LunarObservatoryPedestalTableBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("lunar_observatory_pedestal_table")).mapColor(DyeColor.RED)));
     public static final RegistryObject<Block> MERMAID_PEARL = registerBlock("mermaid_pearl",
@@ -2108,7 +2112,7 @@ public class BlockRegistration {
     public static final RegistryObject<Block> COTTAGE_CHAIR_CUSHIONED = registerBlock("cottage_chair_cushioned",
             () -> new CottageChairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("cottage_chair_cushioned")).mapColor(DyeColor.PINK).noOcclusion()));
     public static final RegistryObject<Block> COTTAGE_OTTOMAN = registerBlock("cottage_ottoman",
-            () -> new CottageOttomanBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("cottage_ottoman")).mapColor(DyeColor.PINK).noOcclusion()));
+            () -> new CottageOttomanBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("cottage_ottoman")).mapColor(DyeColor.PINK).noOcclusion()));
     public static final RegistryObject<Block> MADONNA_OTTOMAN = registerBlock("madonna_ottoman",
             () -> new MadonnaOttomanBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).setId(BLOCKS.key("madonna_ottoman")).mapColor(DyeColor.BLUE).noOcclusion()));
 
@@ -2216,7 +2220,7 @@ public class BlockRegistration {
     public static final RegistryObject<Block> CUPID_BENCH = registerBlock("cupid_bench",
             () -> new CupidBenchBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_BLOCK).setId(BLOCKS.key("cupid_bench")).mapColor(DyeColor.WHITE).noOcclusion()));
     public static final RegistryObject<Block> SEWING_CLUTTER = registerBlock("sewing_clutter",
-            () -> new SewingClutterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_CARPET).setId(BLOCKS.key("sewing_clutter")).mapColor(DyeColor.GREEN).lightLevel(p -> p.getValue(SewingClutterBlock.MULTIBLOCK_PART) == 2 ? 10 : 0).noOcclusion()));
+            () -> new SewingClutterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CARPET.pick(DyeColor.PINK)).setId(BLOCKS.key("sewing_clutter")).mapColor(DyeColor.GREEN).lightLevel(p -> p.getValue(SewingClutterBlock.MULTIBLOCK_PART) == 2 ? 10 : 0).noOcclusion()));
     public static final RegistryObject<Block> PASTRY_DISPLAY_CASE = registerBlock("pastry_display_case",
             () -> new PastryDisplayCaseBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).setId(BLOCKS.key("pastry_display_case")).mapColor(DyeColor.BLACK).noOcclusion()));
     public static final RegistryObject<Block> IMPERIAL_CHAIR = registerBlock("imperial_chair",
@@ -2266,64 +2270,64 @@ public class BlockRegistration {
 
     //CHAIRS
     public static final RegistryObject<Block> LOVELY_LOVE_SEAT = registerBlock("lovely_love_seat_basic",
-            () -> new LovelyLoveSeatBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("lovely_love_seat_basic")).noOcclusion()));
+            () -> new LovelyLoveSeatBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("lovely_love_seat_basic")).noOcclusion()));
     public static final RegistryObject<Block> LOVELY_LOVE_SEAT_BLACK = registerBlock("lovely_love_seat_black",
-            () -> new LovelyLoveSeatBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("lovely_love_seat_black")).noOcclusion()));
+            () -> new LovelyLoveSeatBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("lovely_love_seat_black")).noOcclusion()));
 
     //ARMCHAIRS
     public static final RegistryObject<Block> ARMCHAIR_BLACK = registerBlock("armchair_black",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLACK_WOOL).setId(BLOCKS.key("armchair_black")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLACK)).setId(BLOCKS.key("armchair_black")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_BLACK_CAT = registerBlock("armchair_black_cat",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLACK_WOOL).setId(BLOCKS.key("armchair_black_cat")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLACK)).setId(BLOCKS.key("armchair_black_cat")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_BLUE = registerBlock("armchair_blue",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("armchair_blue")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("armchair_blue")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_BROWN = registerBlock("armchair_brown",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL).setId(BLOCKS.key("armchair_brown")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BROWN)).setId(BLOCKS.key("armchair_brown")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_CYAN = registerBlock("armchair_cyan",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CYAN_WOOL).setId(BLOCKS.key("armchair_cyan")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.CYAN)).setId(BLOCKS.key("armchair_cyan")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_FLOWER = registerBlock("armchair_flower",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("armchair_flower")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("armchair_flower")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_FUCHSIA = registerBlock("armchair_fuchsia",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MAGENTA_WOOL).setId(BLOCKS.key("armchair_fuchsia")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.MAGENTA)).setId(BLOCKS.key("armchair_fuchsia")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_GRAY = registerBlock("armchair_gray",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GRAY_WOOL).setId(BLOCKS.key("armchair_gray")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.GRAY)).setId(BLOCKS.key("armchair_gray")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_GREEN = registerBlock("armchair_green",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GREEN_WOOL).setId(BLOCKS.key("armchair_green")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.GREEN)).setId(BLOCKS.key("armchair_green")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_HEART = registerBlock("armchair_heart",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("armchair_heart")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("armchair_heart")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_IVORY = registerBlock("armchair_ivory",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).setId(BLOCKS.key("armchair_ivory")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.WHITE)).setId(BLOCKS.key("armchair_ivory")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_LEMON = registerBlock("armchair_lemon",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_WOOL).setId(BLOCKS.key("armchair_lemon")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIME)).setId(BLOCKS.key("armchair_lemon")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_LIGHT_BLUE = registerBlock("armchair_light_blue",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIGHT_BLUE_WOOL).setId(BLOCKS.key("armchair_light_blue")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIGHT_BLUE)).setId(BLOCKS.key("armchair_light_blue")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_LIGHT_GRAY = registerBlock("armchair_light_gray",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIGHT_GRAY_WOOL).setId(BLOCKS.key("armchair_light_gray")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIGHT_GRAY)).setId(BLOCKS.key("armchair_light_gray")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_LIME = registerBlock("armchair_lime",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_WOOL).setId(BLOCKS.key("armchair_lime")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIME)).setId(BLOCKS.key("armchair_lime")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_MAGENTA = registerBlock("armchair_magenta",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLACK_WOOL).setId(BLOCKS.key("armchair_magenta")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLACK)).setId(BLOCKS.key("armchair_magenta")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_ORANGE = registerBlock("armchair_orange",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ORANGE_WOOL).setId(BLOCKS.key("armchair_orange")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.ORANGE)).setId(BLOCKS.key("armchair_orange")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_PINK = registerBlock("armchair_pink",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("armchair_pink")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("armchair_pink")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_PURPLE = registerBlock("armchair_purple",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_WOOL).setId(BLOCKS.key("armchair_purple")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PURPLE)).setId(BLOCKS.key("armchair_purple")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_RED = registerBlock("armchair_red",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL).setId(BLOCKS.key("armchair_red")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.RED)).setId(BLOCKS.key("armchair_red")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_STARRY = registerBlock("armchair_starry",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_WOOL).setId(BLOCKS.key("armchair_starry")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.BLUE)).setId(BLOCKS.key("armchair_starry")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_STRAWBERRY = registerBlock("armchair_strawberry",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL).setId(BLOCKS.key("armchair_strawberry")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.PINK)).setId(BLOCKS.key("armchair_strawberry")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_WATERMELON = registerBlock("armchair_watermelon",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_WOOL).setId(BLOCKS.key("armchair_watermelon")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.LIME)).setId(BLOCKS.key("armchair_watermelon")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_WHITE = registerBlock("armchair_white",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).setId(BLOCKS.key("armchair_white")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.WHITE)).setId(BLOCKS.key("armchair_white")).noOcclusion()));
     public static final RegistryObject<Block> ARMCHAIR_YELLOW = registerBlock("armchair_yellow",
-            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_WOOL).setId(BLOCKS.key("armchair_yellow")).noOcclusion()));
+            () -> new ArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.YELLOW)).setId(BLOCKS.key("armchair_yellow")).noOcclusion()));
 
     public static final RegistryObject<Block> COTTAGE_ARMCHAIR = registerBlock("cottage_armchair",
-            () -> new CottageArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL).setId(BLOCKS.key("cottage_armchair")).noOcclusion()));
+            () -> new CottageArmchairBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WOOL.pick(DyeColor.WHITE)).setId(BLOCKS.key("cottage_armchair")).noOcclusion()));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
@@ -2337,16 +2341,11 @@ public class BlockRegistration {
     }
 
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
-        return ItemRegistration.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().setId(ItemRegistration.ITEMS.key(name))));
+        return ItemRegistration.ITEMS.register(name, () -> new BlockItem(block.get(), blockItemProperties(name)));
     }
     private static <T extends Block> RegistryObject<Item> registerFuelBlockItem(String name, RegistryObject<T> block, int burnTime) {
-        RegistryObject<Item> item = ItemRegistration.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().setId(ItemRegistration.ITEMS.key(name))) {
-            public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-                return burnTime;
-            }
-        });
-        FUEL_ITEMS.add(new FuelEntry(item, burnTime));
-        return item;
+        return ItemRegistration.ITEMS.register(name, () -> new BlockItem(block.get(),
+                withCookingFuel(blockItemProperties(name), burnTime)));
     }
 
     public static void register (BusGroup eventBus) {
@@ -2354,17 +2353,28 @@ public class BlockRegistration {
     }
 
     public static void registerFabricContent() {
-        registerFuelValues();
         registerFlammableBlocks();
         registerStrippableBlocks();
     }
 
-    private static void registerFuelValues() {
-        FuelValueEvents.BUILD.register((builder, context) -> {
-            for (FuelEntry entry : FUEL_ITEMS) {
-                builder.add(entry.item().get(), entry.burnTime());
-            }
-        });
+    private static Item.Properties blockItemProperties(String name) {
+        Item.Properties properties = new Item.Properties().setId(ItemRegistration.ITEMS.key(name));
+        ResourceKey<ContextIntProvider> compostable = switch (name) {
+            case "flower_carpet_willow", "flower_carpet_poplar", "flower_carpet_crabapple" -> COMPOSTABLE_VERY_LOW;
+            case "willow_vines" -> ContextIntProviders.COMPOSTABLE_LOW_MEDIUM;
+            case "blue_mushroom_sapling", "red_mushroom_sapling" -> ContextIntProviders.COMPOSTABLE_MEDIUM;
+            case "willow_leaves", "willow_sapling", "poplar_leaves", "flowering_poplar_leaves",
+                    "poplar_sapling", "crabapple_leaves", "crabapple_sapling", "sycamore_leaves",
+                    "sycamore_sapling", "flowering_fluorescent_maple_leaves", "fluorescent_maple_leaves",
+                    "fluorescent_maple_sapling" -> ContextIntProviders.COMPOSTABLE_LOW;
+            default -> null;
+        };
+        return compostable == null ? properties : properties.compostable(compostable);
+    }
+
+    private static Item.Properties withCookingFuel(Item.Properties properties, int burnTime) {
+        return properties.component(DataComponents.COOKING_FUEL, new CookingFuel(
+                new ResolvableInt.Constant(burnTime), new ResolvableFloat.Constant(1.0F)));
     }
 
     private static void registerFlammableBlocks() {
@@ -2383,6 +2393,17 @@ public class BlockRegistration {
         }
     }
 
+    private static void registerStrippableBlocks() {
+        for (RegistryObject<? extends Block> entry : BLOCKS.entries()) {
+            if (entry.get() instanceof CustomLogLikeBlock log) {
+                Block stripped = log.getFabricStrippedCounterpart();
+                if (stripped != null) {
+                    BlockTransformerHelper.registerStripping(log, stripped);
+                }
+            }
+        }
+    }
+
     private static boolean isWoodLike(Block block) {
         return block instanceof CustomWoodBlock
                 || block instanceof CustomHorizontalWoodBlock
@@ -2397,16 +2418,4 @@ public class BlockRegistration {
                 || block instanceof PressurePlateBlock;
     }
 
-    private static void registerStrippableBlocks() {
-        for (RegistryObject<? extends Block> entry : BLOCKS.entries()) {
-            Block block = entry.get();
-
-            if (block instanceof CustomLogLikeBlock logLikeBlock) {
-                Block strippedBlock = logLikeBlock.getFabricStrippedCounterpart();
-                if (strippedBlock != null) {
-                    StrippableBlockRegistry.registerCopyState(block, strippedBlock);
-                }
-            }
-        }
-    }
 }

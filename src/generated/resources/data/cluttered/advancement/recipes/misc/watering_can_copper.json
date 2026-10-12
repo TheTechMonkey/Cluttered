@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:watering_can_copper"
+        "recipes": "cluttered:watering_can_copper"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

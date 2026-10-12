@@ -2,28 +2,24 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
+      "bonus_rolls": 0,
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "block": "cluttered:violet_screen",
-              "condition": "minecraft:block_state_property",
-              "properties": {
-                "part": "1"
-              }
+          "condition": {
+            "blocks": "cluttered:violet_screen",
+            "type": "minecraft:match_block",
+            "state": {
+              "part": "1"
             }
-          ],
+          },
           "name": "cluttered:violet_screen"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "cluttered:blocks/violet_screen"

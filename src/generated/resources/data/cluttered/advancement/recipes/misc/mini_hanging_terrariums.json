@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:mini_hanging_terrariums"
+        "recipes": "cluttered:mini_hanging_terrariums"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

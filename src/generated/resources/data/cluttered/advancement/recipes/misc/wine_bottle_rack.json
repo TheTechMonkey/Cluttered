@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:wine_bottle_rack"
+        "recipes": "cluttered:wine_bottle_rack"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

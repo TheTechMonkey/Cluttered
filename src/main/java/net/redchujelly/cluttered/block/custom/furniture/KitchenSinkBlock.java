@@ -9,6 +9,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
@@ -53,7 +54,7 @@ public class KitchenSinkBlock extends SmallFurnitureBlock{
                 } else if (pPlayer.addItem(filledItem)) {
                     itemStack.shrink(1);
                 } else {
-                    pPlayer.drop(filledItem, true);
+                    pPlayer.drop(filledItem, true, Prediction.SERVER_ONLY);
                     itemStack.shrink(1);
                 }
                 pLevel.playSound(null, pPos, sound, SoundSource.BLOCKS);

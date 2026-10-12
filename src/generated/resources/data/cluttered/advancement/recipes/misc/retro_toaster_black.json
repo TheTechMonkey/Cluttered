@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:retro_toaster_black"
+        "recipes": "cluttered:retro_toaster_black"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

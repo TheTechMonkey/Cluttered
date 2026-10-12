@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:garland_polaroid_b"
+        "recipes": "cluttered:garland_polaroid_b"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

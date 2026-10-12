@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:tiles_yellow_from_yellow_concrete_stonecutting"
+        "recipes": "cluttered:tiles_yellow_from_yellow_concrete_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

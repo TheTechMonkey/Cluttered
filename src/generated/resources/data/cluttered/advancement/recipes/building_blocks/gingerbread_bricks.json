@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:gingerbread_bricks"
+        "recipes": "cluttered:gingerbread_bricks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

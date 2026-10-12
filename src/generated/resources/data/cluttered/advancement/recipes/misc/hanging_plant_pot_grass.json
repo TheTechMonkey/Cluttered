@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:hanging_plant_pot_grass"
+        "recipes": "cluttered:hanging_plant_pot_grass"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

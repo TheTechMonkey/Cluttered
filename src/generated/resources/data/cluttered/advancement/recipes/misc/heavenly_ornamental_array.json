@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:heavenly_ornamental_array"
+        "recipes": "cluttered:heavenly_ornamental_array"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:armchair_fuchsia"
+        "recipes": "cluttered:armchair_fuchsia"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

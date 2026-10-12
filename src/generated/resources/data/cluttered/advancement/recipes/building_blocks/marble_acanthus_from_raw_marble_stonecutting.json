@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:marble_acanthus_from_raw_marble_stonecutting"
+        "recipes": "cluttered:marble_acanthus_from_raw_marble_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:darkwood_decorative_shelves_geometric"
+        "recipes": "cluttered:darkwood_decorative_shelves_geometric"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

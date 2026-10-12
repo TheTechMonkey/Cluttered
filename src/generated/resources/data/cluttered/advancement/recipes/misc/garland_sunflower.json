@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:garland_sunflower"
+        "recipes": "cluttered:garland_sunflower"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

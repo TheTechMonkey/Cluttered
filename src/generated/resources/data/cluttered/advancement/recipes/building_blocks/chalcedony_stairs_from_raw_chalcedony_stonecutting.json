@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:chalcedony_stairs_from_raw_chalcedony_stonecutting"
+        "recipes": "cluttered:chalcedony_stairs_from_raw_chalcedony_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

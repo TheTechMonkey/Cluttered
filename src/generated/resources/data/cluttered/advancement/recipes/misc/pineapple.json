@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:pineapple"
+        "recipes": "cluttered:pineapple"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

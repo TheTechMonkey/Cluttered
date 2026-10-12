@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:alabaster_screen_door_from_calcite_stonecutting"
+        "recipes": "cluttered:alabaster_screen_door_from_calcite_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

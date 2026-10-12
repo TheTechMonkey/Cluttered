@@ -1,0 +1,76 @@
+{
+  "type": "minecraft:tree",
+  "below_trunk_provider": {
+    "id": "minecraft:dirt"
+  },
+  "decorators": [],
+  "foliage_placer": {
+    "type": "cluttered:crabapple_foliage_placer",
+    "height": 3,
+    "offset": 3,
+    "radius": 3
+  },
+  "foliage_provider": {
+    "type": "minecraft:weighted",
+    "entries": [
+      {
+        "data": {
+          "id": "cluttered:crabapple_leaves",
+          "properties": {
+            "distance": "7",
+            "persistent": "false",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 2
+      },
+      {
+        "data": {
+          "id": "cluttered:flowering_crabapple_leaves",
+          "properties": {
+            "distance": "7",
+            "persistent": "false",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 5
+      }
+    ]
+  },
+  "ignore_vines": false,
+  "minimum_size": {
+    "type": "minecraft:two_layers_feature_size",
+    "limit": 4,
+    "lower_size": 0,
+    "upper_size": 3
+  },
+  "trunk_placer": {
+    "type": "cluttered:crabapple_trunk_placer",
+    "base_height": 4,
+    "height_rand_a": 0,
+    "height_rand_b": 2
+  },
+  "trunk_provider": {
+    "type": "minecraft:weighted",
+    "entries": [
+      {
+        "data": {
+          "id": "cluttered:crabapple_log",
+          "properties": {
+            "axis": "y"
+          }
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "cluttered:flowering_crabapple_log",
+          "properties": {
+            "axis": "y"
+          }
+        },
+        "weight": 1
+      }
+    ]
+  }
+}

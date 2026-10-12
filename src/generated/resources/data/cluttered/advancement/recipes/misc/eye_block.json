@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:eye_block"
+        "recipes": "cluttered:eye_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

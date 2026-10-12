@@ -2,28 +2,24 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
+      "bonus_rolls": 0,
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "block": "cluttered:desk_green",
-              "condition": "minecraft:block_state_property",
-              "properties": {
-                "part": "1"
-              }
+          "condition": {
+            "blocks": "cluttered:desk_green",
+            "type": "minecraft:match_block",
+            "state": {
+              "part": "1"
             }
-          ],
+          },
           "name": "cluttered:desk_green"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "cluttered:blocks/desk_green"

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:seltzer_cans"
+        "recipes": "cluttered:seltzer_cans"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:brass_key"
+        "recipes": "cluttered:brass_key"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

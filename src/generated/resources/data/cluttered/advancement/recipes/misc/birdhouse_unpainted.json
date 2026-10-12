@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:birdhouse_unpainted"
+        "recipes": "cluttered:birdhouse_unpainted"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

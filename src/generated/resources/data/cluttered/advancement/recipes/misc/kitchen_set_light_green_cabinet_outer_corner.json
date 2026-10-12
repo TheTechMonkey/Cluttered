@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:kitchen_set_light_green_cabinet_outer_corner"
+        "recipes": "cluttered:kitchen_set_light_green_cabinet_outer_corner"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

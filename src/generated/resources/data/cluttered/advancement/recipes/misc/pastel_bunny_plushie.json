@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:pastel_bunny_plushie"
+        "recipes": "cluttered:pastel_bunny_plushie"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

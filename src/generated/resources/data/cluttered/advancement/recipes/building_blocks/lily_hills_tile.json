@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:lily_hills_tile"
+        "recipes": "cluttered:lily_hills_tile"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

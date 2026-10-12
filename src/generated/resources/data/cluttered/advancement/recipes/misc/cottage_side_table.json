@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:cottage_side_table"
+        "recipes": "cluttered:cottage_side_table"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

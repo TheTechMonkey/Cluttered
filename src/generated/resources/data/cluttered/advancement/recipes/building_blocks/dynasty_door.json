@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:dynasty_door"
+        "recipes": "cluttered:dynasty_door"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

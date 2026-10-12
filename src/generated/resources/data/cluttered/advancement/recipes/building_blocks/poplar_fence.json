@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:poplar_fence"
+        "recipes": "cluttered:poplar_fence"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

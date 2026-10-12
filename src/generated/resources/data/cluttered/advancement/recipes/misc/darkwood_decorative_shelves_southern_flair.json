@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:darkwood_decorative_shelves_southern_flair"
+        "recipes": "cluttered:darkwood_decorative_shelves_southern_flair"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

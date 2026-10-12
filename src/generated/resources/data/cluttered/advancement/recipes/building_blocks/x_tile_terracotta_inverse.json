@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:x_tile_terracotta_inverse"
+        "recipes": "cluttered:x_tile_terracotta_inverse"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

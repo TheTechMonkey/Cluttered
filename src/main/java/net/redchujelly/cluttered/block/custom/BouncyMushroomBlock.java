@@ -27,28 +27,13 @@ public class BouncyMushroomBlock extends CustomWoodBlock {
         if (pEntity.isSuppressingBounce()) {
             super.fallOn(pLevel, pState, pPos, pEntity, pFallDistance);
         } else {
-            pEntity.causeFallDamage(pFallDistance, 0.0F, pLevel.damageSources().fall());
-        }
-    }
-
-    @Override
-    public void updateEntityMovementAfterFallOn(BlockGetter pLevel, Entity pEntity) {
-        if (pEntity.isSuppressingBounce()) {
-            super.updateEntityMovementAfterFallOn(pLevel, pEntity);
-        } else {
-            this.bounceUp(pEntity);
-        }
-    }
-
-    private void bounceUp(Entity pEntity) {
-        Vec3 movement = pEntity.getDeltaMovement();
-        if (movement.y < -0.0) {
-            if (movement.y < -.35) {
-                BlockPos entityPos = new BlockPos(pEntity.getBlockX(), pEntity.getBlockY(), pEntity.getBlockZ());
-                pEntity.level().playSound(null, entityPos, SoundEvents.SHROOMLIGHT_PLACE, SoundSource.BLOCKS , Math.min(2.0f,  (float)(movement.y * -1.0f)), Math.max(Math.min(2.0f,  (float)(movement.y * -1.3f)), 0.8f));
+            Vec3 movement = pEntity.getDeltaMovement();
+            if (movement.y < -0.35D) {
+                pLevel.playSound(null, pPos, SoundEvents.SHROOMLIGHT_PLACE, SoundSource.BLOCKS,
+                        Math.min(2.0F, (float) -movement.y),
+                        Math.max(Math.min(2.0F, (float) (-movement.y * 1.3D)), 0.8F));
             }
-            double $$2 = pEntity instanceof LivingEntity ? 1.0 : 0.8;
-            pEntity.setDeltaMovement(movement.x, -movement.y * $$2, movement.z);
+            pEntity.causeFallDamage(pFallDistance, 0.0F, pLevel.damageSources().fall());
         }
     }
     public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:kitchen_set_white_cabinet_glass"
+        "recipes": "cluttered:kitchen_set_white_cabinet_glass"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:sliced_bread"
+        "recipes": "cluttered:sliced_bread"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "cluttered:willow_planks"
+        "recipes": "cluttered:willow_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

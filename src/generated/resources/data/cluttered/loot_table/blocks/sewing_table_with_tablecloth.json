@@ -2,28 +2,24 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
+      "bonus_rolls": 0,
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "block": "cluttered:sewing_table_with_tablecloth",
-              "condition": "minecraft:block_state_property",
-              "properties": {
-                "part": "1"
-              }
+          "condition": {
+            "blocks": "cluttered:sewing_table_with_tablecloth",
+            "type": "minecraft:match_block",
+            "state": {
+              "part": "1"
             }
-          ],
+          },
           "name": "cluttered:sewing_table_with_tablecloth"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "cluttered:blocks/sewing_table_with_tablecloth"
