@@ -3,6 +3,8 @@ package net.redchujelly.cluttered.mixin;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -15,6 +17,32 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
+    @Inject(method = "startSleeping", at = @At("HEAD"), cancellable = true)
+    private void cluttered$startSleepingInCustomBed(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+        LivingEntity entity = (LivingEntity) (Object) this;
+        BlockState state = entity.level().getBlockState(pos);
+        if (!(state.getBlock() instanceof MultiblockBedBlock)) {
+            return;
+        }
+
+        var shape = state.getShape(entity.level(), pos);
+        if (shape.isEmpty()) {
+            cir.setReturnValue(false);
+            return;
+        }
+
+        if (entity.isPassenger()) {
+            entity.stopRiding();
+        }
+        double sleepHeight = shape.max(Direction.Axis.Y);
+        entity.setPos(pos.getX() + 0.5, pos.getY() + sleepHeight + 0.125, pos.getZ() + 0.5);
+        entity.setPose(Pose.SLEEPING);
+        entity.setSleepingPos(pos);
+        entity.setDeltaMovement(Vec3.ZERO);
+        entity.needsSync = true;
+        cir.setReturnValue(true);
+    }
+
     @Inject(method = "lambda$checkBedExists$0", at = @At("HEAD"), cancellable = true)
     private void cluttered$checkCustomBedExists(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity entity = (LivingEntity) (Object) this;

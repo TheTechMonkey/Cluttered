@@ -12,6 +12,7 @@ import net.redchujelly.cluttered.setup.SoundRegistration;
 import net.redchujelly.cluttered.setup.TileEntityRegistration;
 import net.redchujelly.cluttered.setup.TreeDecoratorTypeRegistration;
 import net.redchujelly.cluttered.setup.TrunkPlacerTypeRegistration;
+import net.redchujelly.cluttered.setup.LootTableModifiers;
 import org.slf4j.Logger;
 
 public class Cluttered implements ModInitializer {
@@ -35,6 +36,7 @@ public class Cluttered implements ModInitializer {
 
         ItemRegistration.registerFabricContent();
         BlockRegistration.registerFabricContent();
+        LootTableModifiers.register();
         LOGGER.info("Loaded Cluttered Fabric port");
     }
 }

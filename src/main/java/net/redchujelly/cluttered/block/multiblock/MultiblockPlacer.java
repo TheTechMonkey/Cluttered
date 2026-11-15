@@ -4,6 +4,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -14,6 +18,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class MultiblockPlacer extends Block {
@@ -48,6 +53,17 @@ public class MultiblockPlacer extends Block {
         this.registerDefaultState(this.getStateDefinition().any()
                         .setValue(getMultiblockPart(), 1)
                         .setValue(FACING, Direction.NORTH));
+    }
+
+    /**
+     * Preserve the original Cluttered interaction behavior for an empty hand.
+     * Since the interaction API was split, useItemOn alone no longer receives
+     * ordinary empty-hand right-clicks.
+     */
+    @Override
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos,
+                                               Player pPlayer, BlockHitResult pHit) {
+        return useItemOn(ItemStack.EMPTY, pState, pLevel, pPos, pPlayer, InteractionHand.MAIN_HAND, pHit);
     }
 
     @Override
